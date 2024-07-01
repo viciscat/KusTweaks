@@ -1,0 +1,8 @@
+{
+  "package": "com.example.mixin",
+  "minVersion": "0.7",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinGuiMainMenu"
+  ]
+}
