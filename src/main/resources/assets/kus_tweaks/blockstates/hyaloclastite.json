@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "kus_tweaks:hyaloclastite"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "package": "io.github.viciscat.kustweaks.mixin",
-  "minVersion": "0.7",
-  "compatibilityLevel": "JAVA_8",
-  "client": [
-    "MixinGuiMainMenu"
-  ]
-}

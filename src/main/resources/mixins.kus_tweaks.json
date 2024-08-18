@@ -1,0 +1,13 @@
+{
+  "package": "io.github.viciscat.kustweaks.mixin",
+  "refmap": "mixins.${mod_id}.refmap.json",
+  "required": true,
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EnumEnchantmentTypeMixin"
+  ]
+}
