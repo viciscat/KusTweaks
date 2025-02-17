@@ -8,8 +8,19 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "CofhEventHandlerMixin",
+    "cofh.CofhEventHandlerMixin",
+    "cofh.CorePotionsMixin",
     "LilliputianEntitySizeHandlerMixin",
-    "SoulboundEnchantmentMixin"
+    "SoulboundEnchantmentMixin",
+    "EntityBaseBulletMixin",
+    "tg.GenericGunMixin",
+    "tg.GenericGunMixin$ChargeMixin",
+    "tg.GenericGunMixin$MeleeMixin",
+    "tg.TGExplosionMixin",
+    "tg.particle.CommonRocketParticleMixin",
+    "tg.particle.TFGParticleMixin",
+    "tg.particle.CommonParticleMixin",
+    "ExplosionTinkersBaseMixin",
+    "GenericProjectileMixin"
   ]
 }

@@ -5,10 +5,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.DimensionType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +23,8 @@ import java.util.*;
 
 public class KusConfig {
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	private static final List<DimensionalDebuffRaw> rawDimensionalDebuffs = new ArrayList<>();
 	private static EnumMap<DimensionType, List<Debuff>> DEBUFF_MAP = new EnumMap<>(DimensionType.class);
 
@@ -26,6 +32,10 @@ public class KusConfig {
 	public static double verySmallChance = 0.01;
 	public static double veryLargeChanceOther = 0.01;
 	public static double verySmallChanceOther = 0.01;
+
+	public static final Set<String> kindlingDamageSources = new TreeSet<>();
+	public static final Object2IntMap<String> chunkLoadEntityCap = new Object2IntOpenHashMap<>();
+	public static final Set<DimensionType> respawnDisabledDimensions = EnumSet.noneOf(DimensionType.class);
 
 	public static List<Debuff> getDebuffs(DimensionType type) {
 		return DEBUFF_MAP.getOrDefault(type, ImmutableList.of());
@@ -38,8 +48,22 @@ public class KusConfig {
 		} catch (NoSuchFileException e) {
 			return;
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to load config file", e);
 			return;
+		}
+		kindlingDamageSources.clear();
+		kindlingDamageSources.add("tg_fire");
+
+		if (config.has("kindling_damage_sources")) {
+			for (JsonElement source : config.getAsJsonArray("kindling_damage_sources")) {
+				kindlingDamageSources.add(source.getAsString());
+			}
+		}
+
+		if (config.has("chunk_load_entity_cap")) {
+			for (Map.Entry<String, JsonElement> entityCap : config.getAsJsonObject("chunk_load_entity_cap").entrySet()) {
+				chunkLoadEntityCap.put(entityCap.getKey(), entityCap.getValue().getAsInt());
+			}
 		}
 
 		if (config.has("dimensional_debuffs")) {
@@ -48,14 +72,22 @@ public class KusConfig {
 				JsonObject dimensionalDebuffObj = dimensionalDebuff.getAsJsonObject();
 				DimensionalDebuffRaw e = DimensionalDebuffRaw.parseDimensionalDebuff(dimensionalDebuffObj);
 				rawDimensionalDebuffs.add(e);
-				System.out.println(e);
 			}
 		}
 
 		if (config.has("very_large_chance")) veryLargeChance = config.get("very_large_chance").getAsDouble();
 		if (config.has("very_small_chance")) verySmallChance = config.get("very_small_chance").getAsDouble();
-		if (config.has("very_large_chance_other")) veryLargeChanceOther = config.get("very_small_chance_other").getAsDouble();
+		if (config.has("very_large_chance_other")) veryLargeChanceOther = config.get("very_large_chance_other").getAsDouble();
 		if (config.has("very_small_chance_other")) verySmallChanceOther = config.get("very_small_chance_other").getAsDouble();
+		if (config.has("respawn_disabled_dimensions")) {
+			JsonArray arr = config.getAsJsonArray("respawn_disabled_dimensions");
+			for (JsonElement e : arr) {
+				if (!e.isJsonPrimitive()) continue;
+				JsonPrimitive primitive = e.getAsJsonPrimitive();
+				if (primitive.isString()) respawnDisabledDimensions.add(DimensionType.byName(e.getAsString()));
+				if (primitive.isNumber()) respawnDisabledDimensions.add(DimensionType.getById(e.getAsInt()));
+			}
+		}
 
 	}
 

@@ -1,5 +1,6 @@
-package io.github.viciscat.kustweaks;
+package io.github.viciscat.kustweaks.block;
 
+import io.github.viciscat.kustweaks.KusTweaksMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;

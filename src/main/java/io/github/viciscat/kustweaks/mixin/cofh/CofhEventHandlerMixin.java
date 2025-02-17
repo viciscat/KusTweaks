@@ -1,4 +1,4 @@
-package io.github.viciscat.kustweaks.mixin;
+package io.github.viciscat.kustweaks.mixin.cofh;
 
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;

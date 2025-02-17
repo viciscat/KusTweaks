@@ -1,1 +1,19 @@
+# Blocks
 tile.kus_tweaks.hyaloclastite.name=Hyaloclastite
+tile.kus_tweaks.respawn_anchor.name=Respawn Anchor
+
+# Items
+item.kus_tweaks.item_magnet.name=Magnetic Core
+item.kus_tweaks.infinite_antigravpack.name=§dInfinite§r Anti Gravity Device
+item.kus_tweaks.evil_essence.name=Evil Essence
+
+# Attributes
+attribute.name.kus_tweaks.tgReloadSpeed=§eReload Speed
+attribute.name.kus_tweaks.tgFireRate=§eFire Rate
+attribute.name.kus_tweaks.tgMultishotChance=§eMultishot
+attribute.name.kus_tweaks.tgAmmoRefundChance=§eAmmo Refund Chance
+attribute.name.kus_tweaks.explosionSizeMultiplier=§cExplosion Size
+attribute.name.kus_tweaks.tgProjectileBounceChance=§eBounces
+
+# Potions
+kus_tweaks.effect.kindling=Kindling
