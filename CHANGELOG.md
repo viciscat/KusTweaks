@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2.11.1
+- Fixed bug with using mod classes in vanilla mixins
+
 ## 2.11.0
 - Merge-in Better Respawn and make spawned golems not drop anything
 

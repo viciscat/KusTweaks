@@ -13,6 +13,7 @@ import com.tmtravlr.potioncore.potion.PotionRevival;
 import electroblob.wizardry.registry.WizardryItems;
 import io.github.viciscat.kustweaks.KusConfig;
 import io.github.viciscat.kustweaks.KusTweaksMod;
+import io.github.viciscat.kustweaks.MixinMethods;
 import io.github.viciscat.kustweaks.injected.ExtendedPlayerMP;
 import io.github.viciscat.wither.DecayPotion;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -83,48 +84,15 @@ public class PlayerListMixin {
         if (longs.size() > 3) {
             longs.clear();
 
-            EntityLiving entityIronGolem = kusTweaks$getGolem(entityplayermp);
+            EntityLiving entityIronGolem = MixinMethods.getGolem(entityplayermp);
             entityIronGolem.setPosition(entityplayermp.posX, entityplayermp.posY, entityplayermp.posZ);
-            kusTweaks$addEffectsToGolem(entityIronGolem);
+            MixinMethods.addEffectsToGolem(entityIronGolem);
             entityplayermp.getServerWorld().spawnEntity(entityIronGolem);
 
-            kusTweaks$addEffectsToPlayer(entityplayermp);
+            MixinMethods.addEffectsToPlayer(entityplayermp);
 
             entityplayermp.sendMessage(new TextComponentString("<§k???§r> S§ke§rems you ne§ke§rd s§ko§rme §l§ehelp§r!"));
 
         }
-    }
-
-    @Unique
-    private static EntityLiving kusTweaks$getGolem(EntityPlayerMP entity) {
-        ParasitePlayer capability = entity.getCapability(CapabilityParasitePlayer.PARASITE_PLAYER_CAPABILITY, null);
-        if (capability == null || !capability.isParasite()) {
-            return new EntityIronGolem(entity.getServerWorld());
-        } else {
-            return new EntityHiGolem(entity.getServerWorld());
-        }
-    }
-
-    @Unique
-    private static void kusTweaks$addEffectsToGolem(EntityLivingBase entityLiving) {
-        entityLiving.addPotionEffect(new PotionEffect(DecayPotion.INSTANCE      , 30*20*60, 0, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE     , 30*20*60, 1, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED          , 30*20*60, 1, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(MobEffects.HASTE          , 30*20*60, 1, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(PotionRecoil.INSTANCE     , 30*20*60, 1, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(PotionMagicShield.INSTANCE, 30*20*60, 1, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(SRPPotions.EPEL_E         , 30*20*60, 0, false, false));
-        entityLiving.getEntityData().setBoolean("CannotDropLoot", true);
-    }
-    @Unique
-    private static void kusTweaks$addEffectsToPlayer(EntityPlayerMP entityLiving) {
-        entityLiving.addPotionEffect(new PotionEffect(PotionRevival.INSTANCE, 60*20, 0, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 15*20, 4, false, false));
-        entityLiving.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 60*20, 2, false, false));
-
-        if (entityLiving.inventory.armorInventory.get(0).isEmpty()) entityLiving.inventory.armorInventory.set(0, new ItemStack(WizardryItems.spectral_boots));
-        if (entityLiving.inventory.armorInventory.get(1).isEmpty()) entityLiving.inventory.armorInventory.set(1, new ItemStack(WizardryItems.spectral_leggings));
-        if (entityLiving.inventory.armorInventory.get(2).isEmpty()) entityLiving.inventory.armorInventory.set(2, new ItemStack(WizardryItems.spectral_chestplate));
-        if (entityLiving.inventory.armorInventory.get(3).isEmpty()) entityLiving.inventory.armorInventory.set(3, new ItemStack(WizardryItems.spectral_helmet));
     }
 }
