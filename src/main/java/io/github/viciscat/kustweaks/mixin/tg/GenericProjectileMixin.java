@@ -1,4 +1,4 @@
-package io.github.viciscat.kustweaks.mixin;
+package io.github.viciscat.kustweaks.mixin.tg;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

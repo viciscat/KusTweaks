@@ -1,11 +1,13 @@
 package io.github.viciscat.kustweaks.block;
 
+import io.github.viciscat.kustweaks.KusConfig;
 import io.github.viciscat.kustweaks.KusTweaksMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,8 +26,13 @@ public class RespawnAnchorBlock extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (worldIn.isRemote) return true;
-        playerIn.setSpawnPoint(pos, false);
-        playerIn.sendStatusMessage(new TextComponentString("Respawn point set!"), true);
+        if (KusConfig.respawnDisabledDimensions.contains(worldIn.provider.getDimensionType())) {
+            worldIn.setBlockToAir(pos);
+            worldIn.newExplosion(null, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, 5.0F, true, true);
+        } else {
+            playerIn.setSpawnPoint(pos, false);
+            playerIn.sendStatusMessage(new TextComponentString("Respawn point set!"), true);
+        }
         return true;
     }
 }

@@ -4,14 +4,17 @@ import io.github.viciscat.kustweaks.network.KusNetwork;
 import io.github.viciscat.kustweaks.network.RandomRespawnPacket;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -76,5 +79,16 @@ public class ClientEvents {
             GuiButton button1 = event.getButtonList().get(i);
             button1.y += 24;
         }
+    }
+
+    @SubscribeEvent
+    public static void playSound(PlaySoundEvent event){
+        if (SoundEvents.ENTITY_LIGHTNING_THUNDER.getRegistryName().equals(event.getSound().getSoundLocation()) && event.getSound() instanceof PositionedSound){
+            PositionedSound simpleSound = (PositionedSound) event.getSound();
+            if (Minecraft.getMinecraft().player != null && Minecraft.getMinecraft().player.getPosition().distanceSq(simpleSound.getXPosF(), simpleSound.getYPosF(), simpleSound.getZPosF()) > 128*128){
+                event.setResultSound(null);
+            }
+        }
+
     }
 }

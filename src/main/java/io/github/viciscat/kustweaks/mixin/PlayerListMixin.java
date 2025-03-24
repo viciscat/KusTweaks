@@ -5,6 +5,7 @@ import com.dhanantry.scapeandrunparasites.init.SRPPotions;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.srpcotesia.capability.CapabilityParasitePlayer;
 import com.srpcotesia.capability.ParasitePlayer;
 import com.tmtravlr.potioncore.potion.PotionMagicShield;
@@ -22,19 +23,25 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.HashMap;
@@ -45,14 +52,20 @@ import java.util.UUID;
 @Mixin(PlayerList.class)
 public class PlayerListMixin {
 
-    @WrapOperation(method = "recreatePlayerEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldProvider;canRespawnHere()Z"))
-    private boolean allowRespawnWithRespawnAnchor(WorldProvider instance, Operation<Boolean> original, @Local World world, @Local(argsOnly = true) EntityPlayerMP player, @Local(argsOnly = true) int dimension, @Local(argsOnly = true) boolean conqueredEnd) {
-        if (KusConfig.respawnDisabledDimensions.contains(DimensionType.getById(dimension))) return false;
-        if (conqueredEnd || original.call(instance)) return true;
-        BlockPos bedLocation = player.getBedLocation(dimension);
-        //noinspection ConstantValue
-        if (bedLocation == null) return false;
-        return world.getBlockState(bedLocation).getBlock() == KusTweaksMod.respawnAnchorBlock;
+    @Shadow @Final private MinecraftServer server;
+
+    @Inject(method = "recreatePlayerEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityTracker;removePlayerFromTrackers(Lnet/minecraft/entity/player/EntityPlayerMP;)V"))
+    private void recreatePlayerEntity(CallbackInfoReturnable<EntityPlayerMP> cir, @Local(argsOnly = true) EntityPlayerMP playerIn, @Local(argsOnly = true) LocalIntRef dimension) {
+        if (!playerIn.hasSpawnDimension()) return;
+        int newDim = playerIn.getSpawnDimension();
+        if (KusConfig.respawnDisabledDimensions.contains(DimensionType.getById(newDim))) return;
+        WorldServer world = server.getWorld(newDim);
+        if (world == null) return;
+        BlockPos bedLocation = playerIn.getBedLocation(newDim);
+        if (bedLocation == null) return;
+        if (world.getBlockState(bedLocation).getBlock() != KusTweaksMod.respawnAnchorBlock) return;
+        dimension.set(newDim);
+
     }
 
     @Unique

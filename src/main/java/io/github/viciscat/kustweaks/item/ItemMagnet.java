@@ -23,6 +23,7 @@ public class ItemMagnet extends Item implements IBauble {
 		setRegistryName(KusTweaksMod.MOD_ID, "item_magnet");
 		setTranslationKey(KusTweaksMod.MOD_ID + ".item_magnet");
 		setCreativeTab(CreativeTabs.TOOLS);
+		setMaxStackSize(1);
 	}
 
 	@Override
@@ -58,6 +59,7 @@ public class ItemMagnet extends Item implements IBauble {
 
 	@SuppressWarnings({"ConstantValue", "DataFlowIssue"})
 	private void pickupItems(EntityPlayer player) {
+		if (player.isDead) return;
 		List<EntityItem> entitiesWithinAABB = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(2, 1, 2));
 		for (EntityItem item : entitiesWithinAABB) {
 			if (!item.isDead) {

@@ -2,7 +2,9 @@ package io.github.viciscat.kustweaks;
 
 import com.dhanantry.scapeandrunparasites.entity.monster.hijacked.EntityHiGolem;
 import com.dhanantry.scapeandrunparasites.init.SRPPotions;
+import com.srpcotesia.capability.CapabilityEnhancedMob;
 import com.srpcotesia.capability.CapabilityParasitePlayer;
+import com.srpcotesia.capability.EnhancedMob;
 import com.srpcotesia.capability.ParasitePlayer;
 import com.tmtravlr.potioncore.potion.PotionMagicShield;
 import com.tmtravlr.potioncore.potion.PotionRecoil;
@@ -25,7 +27,15 @@ public class MixinMethods {
     public static EntityLiving getGolem(EntityPlayerMP entity) {
         ParasitePlayer capability = entity.getCapability(CapabilityParasitePlayer.PARASITE_PLAYER_CAPABILITY, null);
         if (capability == null || !capability.isParasite()) {
-            return new EntityIronGolem(entity.getServerWorld());
+            EntityIronGolem golem = new EntityIronGolem(entity.getServerWorld());
+            EnhancedMob enhancedMob = golem.getCapability(CapabilityEnhancedMob.ENHANCED_MOB_CAPABILITY, null);
+            assert enhancedMob != null;
+            enhancedMob.setAnte(1);
+            enhancedMob.setBane(2);
+            enhancedMob.setDefense(600);
+            enhancedMob.setMaxDefense(600);
+            enhancedMob.setEnhanced(true);
+            return golem;
         } else {
             return new EntityHiGolem(entity.getServerWorld());
         }

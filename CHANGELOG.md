@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# 3.0.0
+- Merged cool-attributes into this mod
+- Drownier and Resistance Penetration potions
+- Make wither skeletons spawned by the wither not drop anything (rough mobs)
+- Add magicPercentDamage attribute that works like the percent attributes in SRP Cotesia
+- Make projectilePercentDamage and projectileMinimumDamage from SRP Cotesia work with TechGuns' weapons
+- Make `skill` and `indirectSkill` from EnderSkills count as magic
+- Make players respawn at the last right-clicked spawn point
+
 ## 2.11.1
 - Fixed bug with using mod classes in vanilla mixins
 

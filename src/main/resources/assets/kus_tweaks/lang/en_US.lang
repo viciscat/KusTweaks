@@ -1,3 +1,4 @@
+#PARSE_ESCAPES
 # Blocks
 tile.kus_tweaks.hyaloclastite.name=Hyaloclastite
 tile.kus_tweaks.respawn_anchor.name=Respawn Anchor
@@ -14,6 +15,17 @@ attribute.name.kus_tweaks.tgMultishotChance=§eMultishot
 attribute.name.kus_tweaks.tgAmmoRefundChance=§eAmmo Refund Chance
 attribute.name.kus_tweaks.explosionSizeMultiplier=§cExplosion Size
 attribute.name.kus_tweaks.tgProjectileBounceChance=§eBounces
+attribute.name.kus_tweaks.healPerTick=§4Health per Tick
+attribute.name.kus_tweaks.lifeStealPercentage=§4Life steal
+attribute.name.kus_tweaks.outOfWorldPercentage=§0Extra OutOfWorld Damage
+attribute.name.kus_tweaks.healPercentMaxHealthPerTick=§4Max Health per Tick
+attribute.name.kus_tweaks.directDamagePercentage=§0Extra Direct Damage
+attribute.name.kus_tweaks.explosionDamage=§cExplosion Damage
+attribute.name.kus_tweaks.healPercentDamage=§3Damage Redirection
+attribute.name.kus_tweaks.magicPercentDamage=§bMagic Minimum Damage Conversion Rate
 
 # Potions
 kus_tweaks.effect.kindling=Kindling
+kus_tweaks.effect.redirection=Redirection
+kus_tweaks.effect.penetrator=Penetrator
+kus_tweaks.effect.drownier=Drownier

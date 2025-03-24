@@ -1,12 +1,17 @@
 package io.github.viciscat.kustweaks;
 
+import com.dhanantry.scapeandrunparasites.entity.ai.misc.EntityPMalleable;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.srpcotesia.handler.EnhancedMobHandler;
+import com.srpcotesia.init.SRPCAttributes;
+import com.srpcotesia.util.ParasiteInteractions;
 import io.github.viciscat.kustweaks.block.HyaloclastiteBlock;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
 import io.github.viciscat.kustweaks.injected.ExtendedPlayer;
 import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
 import io.github.viciscat.kustweaks.item.ItemMagnet;
+import io.github.viciscat.kustweaks.potion.DrownierPotion;
 import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import net.minecraft.block.Block;
@@ -23,14 +28,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -38,6 +42,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 import java.util.UUID;
@@ -86,14 +91,95 @@ public class CommonEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
         ExtendedPlayer.of(event.player).kusTweaks$setMagnetTicked(false);
+        if (event.side == Side.CLIENT) return;
+        if (event.player.getHealth() == event.player.getMaxHealth()) return;
+        float flatHealAmount = (float) event.player.getAttributeMap().getAttributeInstance(KusAttributes.HEAL_AMOUNT_PER_TICK).getAttributeValue();
+        float percentHealAmount = (float) event.player.getAttributeMap().getAttributeInstance(KusAttributes.HEAL_PERCENT_MAX_HEALTH_PER_TICK).getAttributeValue();
+
+        event.player.heal(flatHealAmount + percentHealAmount * event.player.getMaxHealth());
     }
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent event) {
+    public static void onEntityHurt(LivingHurtEvent event) {
         if ((event.getSource().isFireDamage() || KusConfig.kindlingDamageSources.contains(event.getSource().damageType))&& !event.getSource().isDamageAbsolute()) {
-            double multiplier = event.getEntityLiving().getEntityAttribute(KusAttributes.EXTRA_FIRE_DAMAGE_ATTRIBUTE).getAttributeValue() + 1;
+            double multiplier = KusAttributes.getAttributeOrDefault(event.getEntityLiving(), KusAttributes.EXTRA_FIRE_DAMAGE_ATTRIBUTE) + 1;
             event.setAmount((float) (event.getAmount() * multiplier));
         }
+        float damage = event.getAmount();
+        Entity entity = event.getEntity();
+        Entity src = event.getSource().getImmediateSource();
+
+        if (!(entity instanceof EntityLivingBase)) return;
+        EntityLivingBase mob = (EntityLivingBase) entity;
+
+        //logger.debug(damage + " " + event.getSource().getDamageType() + " pre armor");
+        if (src instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) src;
+            float damagePercentOOF = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.OUT_OF_WORLD_PERCENTAGE).getAttributeValue();
+            float damagePercentDirect = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.DIRECT_DAMAGE_PERCENTAGE).getAttributeValue();
+            if (damagePercentOOF > 0.0F){
+                entity.hurtResistantTime = 0;
+                //logger.debug(damage + ", " + damagePercent + ", " + damage * damagePercent);
+                mob.attackEntityFrom(DamageSource.OUT_OF_WORLD, damage * damagePercentOOF);
+            }
+            if (damagePercentDirect > 0.0F){
+                entity.hurtResistantTime = 0;
+                //logger.debug(damage + ", " + damagePercent + ", " + damage * damagePercent);
+                mob.setLastAttackedEntity(null);
+                mob.attackEntityFrom(DamageSource.OUT_OF_WORLD, damage * damagePercentDirect);
+            }
+        }
+        if (event.getSource().getDamageType().equals("drown")) {
+            PotionEffect effect = mob.getActivePotionEffect(DrownierPotion.INSTANCE);
+            if (effect != null) {
+                event.setAmount(event.getAmount() * (1.1f + effect.getAmplifier() * 0.1f));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingDamaged(LivingDamageEvent event) {
+        float damage = event.getAmount();
+        Entity src = event.getSource().getImmediateSource();
+        //logger.debug(damage + " " + event.getSource().getDamageType() + " post armor");
+        if (src instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) src;
+            //logger.debug(src.getName() + " dealt " + damage);
+            float healPercent = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.LIFE_STEAL_PERCENTAGE).getAttributeValue();
+            player.heal(damage * healPercent);
+        }
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            float healPercent = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.HEAL_PERCENT_DAMAGE).getAttributeValue();
+            player.heal(damage * healPercent);
+        }
+    }
+
+    // Code taken from SRP cotesia by roguetictac with permission
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void livingAttack(LivingAttackEvent event) {
+        EntityLivingBase victim = event.getEntityLiving();
+        if (victim.world.isRemote) return;
+        DamageSource source = event.getSource();
+        Entity e = source.getTrueSource();
+
+        if (!source.isMagicDamage() || victim instanceof EntityPMalleable || !(e instanceof EntityLivingBase)) return;
+
+        EntityLivingBase living = (EntityLivingBase) e;
+
+        if (ParasiteInteractions.isParasite(living) && ParasiteInteractions.isParasite(victim)) return;
+
+        float pd = (float) KusAttributes.getAttributeOrDefault(living, KusAttributes.MAGIC_PERCENT_DAMAGE);
+        float minDamage = event.getAmount() * pd;
+        if (minDamage < 1.0E-7) return;
+        minDamage = EnhancedMobHandler.blockMiniDamage(living, victim, minDamage);
+        if (minDamage < 1.0E-7) return;
+        SRPCAttributes.trueDamage(living, victim, source, minDamage);
+
+
+
+
+
     }
 
     @SubscribeEvent

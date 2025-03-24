@@ -1,5 +1,7 @@
-package io.github.viciscat.kustweaks;
+package io.github.viciscat.kustweaks.potion;
 
+import io.github.viciscat.kustweaks.KusAttributes;
+import io.github.viciscat.kustweaks.KusTweaksMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.potion.Potion;

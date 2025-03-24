@@ -161,11 +161,13 @@ dependencies {
     implementation rfg.deobf("slimeknights:TConstruct:1.12.2-2.13.0.190")
     implementation rfg.deobf("curse.maven:potion_core_19-242872:2905184-sources-2905187")
     implementation rfg.deobf("curse.maven:wizardry-265642:5354477")
-    implementation rfg.deobf("curse.maven:cotasia-971348:5398908")
+    implementation rfg.deobf("curse.maven:cotesia-971348:6327376")
+    implementation rfg.deobf("curse.maven:rough_mobs_2-295807:2706899")
 
     implementation rfg.deobf(files("libs/mcheli-1.1.4.jar"))
     implementation rfg.deobf(files("libs/SRParasites-1.12.2v1.9.21.jar"))
     implementation rfg.deobf(files("libs/wither-1.0.1.jar"))
+    implementation rfg.deobf(files("libs/EnderSkills-1.12.2-1.17.0.0.jar"))
 }
 
 apply from: 'gradle/scripts/dependencies.gradle'

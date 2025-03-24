@@ -12,6 +12,7 @@
     "EntityPlayerMPMixin",
     "EnumEnchantmentTypeMixin",
     "ExplosionMixin",
-    "PlayerListMixin"
+    "PlayerListMixin",
+    "DamageSourceMixin"
   ]
 }

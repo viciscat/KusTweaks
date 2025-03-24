@@ -7,10 +7,12 @@ import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
 import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
 import io.github.viciscat.kustweaks.item.ItemMagnet;
 import io.github.viciscat.kustweaks.network.KusNetwork;
+import io.github.viciscat.kustweaks.potion.DrownierPotion;
+import io.github.viciscat.kustweaks.potion.KindlingPotion;
+import io.github.viciscat.kustweaks.potion.RedirectionPotion;
+import io.github.viciscat.kustweaks.potion.ResistancePenetrationPotion;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -48,6 +50,9 @@ public class KusTweaksMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         ForgeRegistries.POTIONS.register(KindlingPotion.INSTANCE);
+        ForgeRegistries.POTIONS.register(RedirectionPotion.INSTANCE);
+        ForgeRegistries.POTIONS.register(ResistancePenetrationPotion.INSTANCE);
+        ForgeRegistries.POTIONS.register(DrownierPotion.INSTANCE);
         File configFile = new File(event.getModConfigurationDirectory(), MOD_ID + ".json");
         KusConfig.loadConfig(configFile);
         KusNetwork.init();

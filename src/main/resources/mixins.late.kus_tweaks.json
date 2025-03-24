@@ -8,19 +8,24 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "EntityBaseBulletMixin",
+    "EntityParasiteBaseMixin",
+    "EntityPMalleableMixin",
+    "ExplosionTinkersBaseMixin",
+    "LilliputianEntitySizeHandlerMixin",
+    "SkeletonSummonMixin",
+    "SoulboundEnchantmentMixin",
+    "SRPCAttributesMixin",
     "cofh.CofhEventHandlerMixin",
     "cofh.CorePotionsMixin",
-    "LilliputianEntitySizeHandlerMixin",
-    "SoulboundEnchantmentMixin",
-    "EntityBaseBulletMixin",
     "tg.GenericGunMixin",
     "tg.GenericGunMixin$ChargeMixin",
     "tg.GenericGunMixin$MeleeMixin",
+    "tg.GenericProjectileAccessor",
+    "tg.GenericProjectileMixin",
     "tg.TGExplosionMixin",
-    "tg.particle.CommonRocketParticleMixin",
-    "tg.particle.TFGParticleMixin",
     "tg.particle.CommonParticleMixin",
-    "ExplosionTinkersBaseMixin",
-    "GenericProjectileMixin"
+    "tg.particle.CommonRocketParticleMixin",
+    "tg.particle.TFGParticleMixin"
   ]
 }
