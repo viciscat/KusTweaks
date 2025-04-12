@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.viciscat.kustweaks.block.HyaloclastiteBlock;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
+import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
 import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
 import io.github.viciscat.kustweaks.item.ItemMagnet;
 import io.github.viciscat.kustweaks.network.KusNetwork;
@@ -45,6 +46,9 @@ public class KusTweaksMod {
 
     @GameRegistry.ObjectHolder("kus_tweaks:evil_essence")
     public static Item itemEvilEssence;
+
+    @GameRegistry.ObjectHolder("kus_tweaks:experience_absorber")
+    public static ItemExperienceAbsorber itemExperienceAbsorber;
 
 
     @Mod.EventHandler

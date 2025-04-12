@@ -7,6 +7,7 @@ tile.kus_tweaks.respawn_anchor.name=Respawn Anchor
 item.kus_tweaks.item_magnet.name=Magnetic Core
 item.kus_tweaks.infinite_antigravpack.name=§dInfinite§r Anti Gravity Device
 item.kus_tweaks.evil_essence.name=Evil Essence
+item.kus_tweaks.experience_absorber.name=Experience Absorber
 
 # Attributes
 attribute.name.kus_tweaks.tgReloadSpeed=§eReload Speed

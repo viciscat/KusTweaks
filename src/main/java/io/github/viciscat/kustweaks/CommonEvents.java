@@ -1,14 +1,17 @@
 package io.github.viciscat.kustweaks;
 
+import baubles.api.BaublesApi;
 import com.dhanantry.scapeandrunparasites.entity.ai.misc.EntityPMalleable;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.srpcotesia.handler.EnhancedMobHandler;
 import com.srpcotesia.init.SRPCAttributes;
 import com.srpcotesia.util.ParasiteInteractions;
+import com.tmtravlr.potioncore.PotionCoreEffects;
+import com.tmtravlr.potioncore.potion.PotionRecoil;
 import io.github.viciscat.kustweaks.block.HyaloclastiteBlock;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
-import io.github.viciscat.kustweaks.injected.ExtendedPlayer;
+import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
 import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
 import io.github.viciscat.kustweaks.item.ItemMagnet;
 import io.github.viciscat.kustweaks.potion.DrownierPotion;
@@ -16,15 +19,19 @@ import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ClassInheritanceMultiMap;
@@ -61,6 +68,7 @@ public class CommonEvents {
         //noinspection DataFlowIssue
         event.getRegistry().register(new ItemBlock(KusTweaksMod.respawnAnchorBlock).setRegistryName(KusTweaksMod.respawnAnchorBlock.getRegistryName()));
         event.getRegistry().register(new ItemMagnet());
+        event.getRegistry().register(new ItemExperienceAbsorber());
         event.getRegistry().register(new ItemInfiniteAntiGravPack("infinite_antigravpack", 123456789));
         event.getRegistry().register(new Item().setRegistryName("evil_essence").setCreativeTab(CreativeTabs.MATERIALS).setTranslationKey(KusTweaksMod.MOD_ID + ".evil_essence"));
     }
@@ -90,7 +98,6 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
-        ExtendedPlayer.of(event.player).kusTweaks$setMagnetTicked(false);
         if (event.side == Side.CLIENT) return;
         if (event.player.getHealth() == event.player.getMaxHealth()) return;
         float flatHealAmount = (float) event.player.getAttributeMap().getAttributeInstance(KusAttributes.HEAL_AMOUNT_PER_TICK).getAttributeValue();
@@ -184,12 +191,16 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
-        if (event.getEntity() instanceof EntityLivingBase) {
-            EntityLivingBase entity = (EntityLivingBase) event.getEntity();
+        Entity eventEntity = event.getEntity();
+        if (eventEntity instanceof EntityLivingBase) {
+            EntityLivingBase entity = (EntityLivingBase) eventEntity;
             AbstractAttributeMap attributeMap = entity.getAttributeMap();
             for (IAttribute attribute : KusAttributes.ALL_ATTRIBUTES) {
                 attributeMap.registerAttribute(attribute);
             }
+        } else if (eventEntity instanceof EntityElderGuardian) {
+            EntityElderGuardian elderGuardian = (EntityElderGuardian) eventEntity;
+            elderGuardian.addPotionEffect(new PotionEffect(PotionRecoil.INSTANCE, Integer.MAX_VALUE, 0, false, false));
         }
     }
 
@@ -211,6 +222,36 @@ public class CommonEvents {
             int i = KusConfig.chunkLoadEntityCap.getInt(s);
             if (entityMultimap.get(s).size() > i) {
                 entityMultimap.get(s).forEach(event.getWorld()::removeEntity);
+            }
+        }
+    }
+
+    private static int roundAverage(float value)
+    {
+        double floor = Math.floor(value);
+        return (int) floor + (Math.random() < value - floor ? 1 : 0);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onExperienceDropped(LivingExperienceDropEvent event) {
+        EntityPlayer player = event.getAttackingPlayer();
+        if (player == null) return;
+        int experience = event.getDroppedExperience();
+        if (BaublesApi.isBaubleEquipped(player, KusTweaksMod.itemExperienceAbsorber) >= 0) {
+            event.setCanceled(true);
+            ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
+
+            if (!itemstack.isEmpty() && itemstack.isItemDamaged())
+            {
+                float ratio = itemstack.getItem().getXpRepairRatio(itemstack);
+                int i = Math.min(roundAverage(experience * ratio), itemstack.getItemDamage());
+                experience -= roundAverage(i / ratio);
+                itemstack.setItemDamage(itemstack.getItemDamage() - i);
+            }
+
+            if (experience > 0)
+            {
+                player.addExperience(experience);
             }
         }
     }

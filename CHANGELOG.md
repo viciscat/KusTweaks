@@ -1,5 +1,16 @@
 # CHANGELOG
 
+# 3.1.0
+- Make wizardry wands enchantable as a weapon
+- (code) Remove necessary check in magnet item
+- Make black flame deal true damage (ender skills)
+- Add Experience Absorber item
+- Buff Elder Guardian:
+  - Give Recoil effect from potion-core
+  - Can see you through walls (that's right frick you)
+- Nerf getting a worm big time (actually additions)
+- Nerf power creation of culinary generator (extra utilities)
+
 # 3.0.0
 - Merged cool-attributes into this mod
 - Drownier and Resistance Penetration potions

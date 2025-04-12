@@ -3,7 +3,6 @@ package io.github.viciscat.kustweaks.item;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import io.github.viciscat.kustweaks.KusTweaksMod;
-import io.github.viciscat.kustweaks.injected.ExtendedPlayer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,9 +36,6 @@ public class ItemMagnet extends Item implements IBauble {
 		if (player.world.isRemote) return;
 		if (player instanceof EntityPlayer) {
 			EntityPlayer playerEntity = (EntityPlayer) player;
-			ExtendedPlayer extendedPlayer = ExtendedPlayer.of(playerEntity);
-			if (extendedPlayer.kusTweaks$hasMagnetTicked()) return;
-			extendedPlayer.kusTweaks$setMagnetTicked(true);
 			pickupItems(playerEntity);
 		}
 	}
@@ -50,9 +46,6 @@ public class ItemMagnet extends Item implements IBauble {
 		if (worldIn.isRemote) return;
 		if (entityIn instanceof EntityPlayer) {
 			EntityPlayer playerEntity = (EntityPlayer) entityIn;
-			ExtendedPlayer extendedPlayer = ExtendedPlayer.of(playerEntity);
-			if (extendedPlayer.kusTweaks$hasMagnetTicked()) return;
-			extendedPlayer.kusTweaks$setMagnetTicked(true);
 			pickupItems(playerEntity);
 		}
 	}

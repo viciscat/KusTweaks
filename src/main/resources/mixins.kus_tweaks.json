@@ -11,6 +11,9 @@
     "EntityPlayerMixin",
     "EntityPlayerMPMixin",
     "EnumEnchantmentTypeMixin",
+    "EnumEnchantmentTypeMixin\$WeaponMixin",
+    "EntityGuardianMixin",
+    "EntityGuardianMixin\$AttackAIMixin",
     "ExplosionMixin",
     "PlayerListMixin",
     "DamageSourceMixin"

@@ -33,6 +33,7 @@ public class ClientEvents {
         registerBlockItemModel(KusTweaksMod.respawnAnchorBlock);
 
         ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemMagnet, 0, new ModelResourceLocation(KusTweaksMod.itemMagnet.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemExperienceAbsorber, 0, new ModelResourceLocation(KusTweaksMod.itemExperienceAbsorber.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemInfiniteAntiGravPack, 0, new ModelResourceLocation(KusTweaksMod.itemInfiniteAntiGravPack.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemEvilEssence, 0, new ModelResourceLocation(KusTweaksMod.itemEvilEssence.getRegistryName(), "inventory"));
         AdditionalSlotRenderRegistry.register(KusTweaksMod.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));

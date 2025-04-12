@@ -1,7 +1,6 @@
 package io.github.viciscat.kustweaks.mixin;
 
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
-import io.github.viciscat.kustweaks.injected.ExtendedPlayer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -11,7 +10,6 @@ import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,26 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 
 @Mixin(EntityPlayer.class)
-public abstract class EntityPlayerMixin extends Entity implements ExtendedPlayer {
+public abstract class EntityPlayerMixin extends Entity {
 
 	public EntityPlayerMixin(World worldIn) {
 		super(worldIn);
 	}
 
 	@Shadow(remap = false) public abstract void setSpawnDimension(@Nullable Integer dimension);
-
-	@Unique
-	private boolean kusTweaks$magnetTicked = false;
-
-	@Override
-	public void kusTweaks$setMagnetTicked(boolean magnetTicked) {
-		this.kusTweaks$magnetTicked = magnetTicked;
-	}
-
-	@Override
-	public boolean kusTweaks$hasMagnetTicked() {
-		return kusTweaks$magnetTicked;
-	}
 
 	@Inject(method = "getBedSpawnLocation", at = @At("HEAD"), cancellable = true)
 	private static void kusTweaks$getRespawnAnchorLocation(World worldIn, BlockPos bedLocation, boolean forceSpawn, CallbackInfoReturnable<BlockPos> cir) {
