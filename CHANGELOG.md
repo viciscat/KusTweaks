@@ -5,7 +5,7 @@
 
 # 3.1.0
 - Make wizardry wands enchantable as a weapon
-- (code) Remove necessary check in magnet item
+- (code) Remove unnecessary check in magnet item
 - Make black flame deal true damage (ender skills)
 - Add Experience Absorber item
 - Buff Elder Guardian:
