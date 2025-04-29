@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.viciscat.kustweaks.block.HyaloclastiteBlock;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
+import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
+import io.github.viciscat.kustweaks.entity.render.RenderWitherSkullBeam;
 import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
 import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
 import io.github.viciscat.kustweaks.item.ItemMagnet;
@@ -14,12 +16,17 @@ import io.github.viciscat.kustweaks.potion.RedirectionPotion;
 import io.github.viciscat.kustweaks.potion.ResistancePenetrationPotion;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,9 +64,22 @@ public class KusTweaksMod {
         ForgeRegistries.POTIONS.register(RedirectionPotion.INSTANCE);
         ForgeRegistries.POTIONS.register(ResistancePenetrationPotion.INSTANCE);
         ForgeRegistries.POTIONS.register(DrownierPotion.INSTANCE);
+
+        ResourceLocation location = new ResourceLocation(MOD_ID, "beam_charge");
+        ForgeRegistries.SOUND_EVENTS.register(new SoundEvent(location).setRegistryName(location));
+        location = new ResourceLocation(MOD_ID, "beam_loop");
+        ForgeRegistries.SOUND_EVENTS.register(new SoundEvent(location).setRegistryName(location));
+
         File configFile = new File(event.getModConfigurationDirectory(), MOD_ID + ".json");
         KusConfig.loadConfig(configFile);
         KusNetwork.init();
+
+        // Every entity in our mod has an ID (local to this mod)
+        int id = 1;
+        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, "wither_skull_beam"), EntityWitherSkullBeam.class, "wither_skull_beam", id++, this, 64, 3, true);
+        if (event.getSide() == Side.CLIENT) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityWitherSkullBeam.class, RenderWitherSkullBeam::new);
+        }
     }
 
     @Mod.EventHandler

@@ -1,5 +1,7 @@
 package io.github.viciscat.kustweaks;
 
+import c4.champions.common.capability.CapabilityChampionship;
+import c4.champions.common.capability.IChampionship;
 import com.dhanantry.scapeandrunparasites.entity.monster.hijacked.EntityHiGolem;
 import com.dhanantry.scapeandrunparasites.init.SRPPotions;
 import com.srpcotesia.capability.CapabilityEnhancedMob;
@@ -13,6 +15,7 @@ import electroblob.wizardry.registry.WizardryItems;
 import io.github.viciscat.wither.DecayPotion;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -61,5 +64,14 @@ public class MixinMethods {
         if (entityLiving.inventory.armorInventory.get(1).isEmpty()) entityLiving.inventory.armorInventory.set(1, new ItemStack(WizardryItems.spectral_leggings));
         if (entityLiving.inventory.armorInventory.get(2).isEmpty()) entityLiving.inventory.armorInventory.set(2, new ItemStack(WizardryItems.spectral_chestplate));
         if (entityLiving.inventory.armorInventory.get(3).isEmpty()) entityLiving.inventory.armorInventory.set(3, new ItemStack(WizardryItems.spectral_helmet));
+    }
+
+    public static int getExtraShots(EntityWither wither) {
+        IChampionship capability = wither.getCapability(CapabilityChampionship.CHAMPION_CAP, null);
+        if (capability != null) {
+            return capability.getRank().getTier();
+        } else {
+            return -1;
+        }
     }
 }

@@ -22,7 +22,6 @@ public class EnumEnchantmentTypeMixin {
         @ModifyReturnValue(method = "canEnchantItem", at = @At("RETURN"))
         private boolean wizardryWands(boolean original, @Local(argsOnly = true) Item itemIn) {
             boolean b = original || itemIn instanceof ItemWand;
-            System.out.println("hi " + b);
             return b;
         }
     }

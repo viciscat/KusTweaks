@@ -16,6 +16,8 @@
     "EntityGuardianMixin\$AttackAIMixin",
     "ExplosionMixin",
     "PlayerListMixin",
-    "DamageSourceMixin"
+    "DamageSourceMixin",
+    "EntityWitherMixin",
+    "WorldInvoker"
   ]
 }

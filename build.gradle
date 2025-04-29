@@ -154,7 +154,7 @@ dependencies {
 
     implementation rfg.deobf("curse.maven:baubles-227083:2518667")
     implementation rfg.deobf("curse.maven:cofh-69162:2920433")
-    implementation rfg.deobf("curse.maven:techguns-244201:2958103-sources-2958384")
+    implementation rfg.deobf("curse.maven:techguns-244201:2958103")
     implementation rfg.deobf("curse.maven:lilliputian-279742:2550380")
     implementation rfg.deobf("curse.maven:totaltinkers-320903:3243998")
     implementation rfg.deobf("curse.maven:extrautils2-225561:2678374")
@@ -165,6 +165,7 @@ dependencies {
     implementation rfg.deobf("curse.maven:cotesia-971348:6327376")
     implementation rfg.deobf("curse.maven:rough_mobs_2-295807:2706899")
     implementation rfg.deobf("curse.maven:actually_additions-228404:3117927")
+    implementation rfg.deobf("curse.maven:champions-307152:3177947")
 
     implementation rfg.deobf(files("libs/mcheli-1.1.4.jar"))
     implementation rfg.deobf(files("libs/SRParasites-1.12.2v1.9.21.jar"))

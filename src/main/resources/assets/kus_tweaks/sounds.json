@@ -1,0 +1,12 @@
+{
+  "beam_charge": {
+    "sounds": [
+      "kus_tweaks:beam_charge"
+    ]
+  },
+  "beam_loop": {
+    "sounds": [
+      "kus_tweaks:beam_loop"
+    ]
+  }
+}

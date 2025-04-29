@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 3.2.0
+- Wither beam thing idk
+
 # 3.1.0
 - Make wizardry wands enchantable as a weapon
 - (code) Remove necessary check in magnet item
