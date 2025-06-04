@@ -2,6 +2,7 @@ package io.github.viciscat.kustweaks.entity;
 
 import io.github.viciscat.kustweaks.mixin.WorldInvoker;
 import io.github.viciscat.kustweaks.sound.BeamSound;
+import io.github.viciscat.kustweaks.sound.KusSoundEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,11 +15,9 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,9 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityWitherSkullBeam extends Entity {
-
-    @GameRegistry.ObjectHolder("kus_tweaks:beam_charge")
-    private static SoundEvent beamChargeSound;
 
 
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(EntityWitherSkullBeam.class, DataSerializers.VARINT);
@@ -201,7 +197,7 @@ public class EntityWitherSkullBeam extends Entity {
                 }
                 if (ticksExisted == chargeStartTime) {
                     motionX = motionY = motionZ = 0;
-                    playSound(beamChargeSound, 32.0F, 1.0F);
+                    playSound(KusSoundEvents.BEAM_CHARGE, 32.0F, 1.0F);
                 }
 
                 double dx = target.posX - this.posX;
@@ -218,8 +214,13 @@ public class EntityWitherSkullBeam extends Entity {
     public void notifyDataManagerChange(DataParameter<?> key) {
         if (!world.isRemote) return;
         if (STATE.equals(key) && dataManager.get(STATE) == 1) {
-            Minecraft.getMinecraft().getSoundHandler().playSound(new BeamSound(this));
+            playSound();
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    void playSound() {
+        Minecraft.getMinecraft().getSoundHandler().playSound(new BeamSound(this));
     }
 
     @Override

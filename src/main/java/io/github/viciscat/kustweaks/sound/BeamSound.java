@@ -3,17 +3,16 @@ package io.github.viciscat.kustweaks.sound;
 import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class BeamSound extends MovingSound {
 
-    @GameRegistry.ObjectHolder("kus_tweaks:beam_loop")
-    private static SoundEvent beamLoop;
     private final EntityWitherSkullBeam source;
 
     public BeamSound(EntityWitherSkullBeam source) {
-        super(beamLoop, SoundCategory.HOSTILE);
+        super(KusSoundEvents.BEAM_LOOP, SoundCategory.HOSTILE);
         this.source = source;
         attenuationType = AttenuationType.NONE;
         repeat = true;

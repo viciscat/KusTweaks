@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 3.2.1
+- fix it trying to load client classes on the server
+
 # 3.2.0
 - Wither beam thing idk
 
