@@ -21,6 +21,7 @@ public final class KusAttributes {
     public static final IAttribute TECHGUNS_MULTISHOT_CHANCE = new RangedAttribute(null, MOD_ID + ".tgMultishotChance", 0, 0, 16);
     public static final IAttribute TECHGUNS_PROJECTILE_BOUNCE_CHANCE = new RangedAttribute(null, MOD_ID + ".tgProjectileBounceChance", 0, 0, 16);
     public static final IAttribute EXPLOSION_SIZE_MULTIPLIER = new RangedAttribute(null, MOD_ID + ".explosionSizeMultiplier", 1, 0, 16);
+    public static final IAttribute EXPLOSION_DAMAGE = new RangedAttribute(null, MOD_ID + ".explosionDamage", 0, 0, 16);
     public static final IAttribute EXTRA_FIRE_DAMAGE_ATTRIBUTE = new RangedAttribute(null, MOD_ID + ".extraFireDamage", 0, 0, 4096);
     public static final IAttribute LIFE_STEAL_PERCENTAGE = new RangedAttribute(null, MOD_ID + ".lifeStealPercentage", 0.0D, 0.0D, 10.0D);
     public static final IAttribute OUT_OF_WORLD_PERCENTAGE = new RangedAttribute(null, MOD_ID + ".outOfWorldPercentage", 0.0D, 0.0D, 10.0D);
@@ -40,6 +41,7 @@ public final class KusAttributes {
             TECHGUNS_MULTISHOT_CHANCE,
             TECHGUNS_PROJECTILE_BOUNCE_CHANCE,
             EXPLOSION_SIZE_MULTIPLIER,
+            EXPLOSION_DAMAGE,
             EXTRA_FIRE_DAMAGE_ATTRIBUTE,
             LIFE_STEAL_PERCENTAGE,
             OUT_OF_WORLD_PERCENTAGE,

@@ -33,15 +33,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -50,6 +53,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import slimeknights.tconstruct.library.utils.TagUtil;
+import slimeknights.tconstruct.library.utils.TinkerUtil;
 
 import java.util.List;
 import java.util.UUID;
@@ -140,6 +145,26 @@ public class CommonEvents {
             PotionEffect effect = mob.getActivePotionEffect(DrownierPotion.INSTANCE);
             if (effect != null) {
                 event.setAmount(event.getAmount() * (1.1f + effect.getAmplifier() * 0.1f));
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void entityAttackedExplosion(LivingHurtEvent event) { // A bit too lazy to merge with existing method so good enoughMore actions
+        float damage = event.getAmount();
+        Entity entity = event.getEntity();
+        Entity src = event.getSource().getTrueSource();
+
+        if (!(entity instanceof EntityLivingBase)) return;
+
+        if (src instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) src;
+            float damagePercentExplosion = (float) KusAttributes.getAttributeOrDefault(player, KusAttributes.EXPLOSION_DAMAGE);
+
+            if (damagePercentExplosion > 0.0F && event.getSource().isExplosion()) {
+                // Apply custom effect for explosion damage
+                float modifiedDamage = damage * (1.0F + damagePercentExplosion);
+                event.setAmount(modifiedDamage);
             }
         }
     }
@@ -294,5 +319,37 @@ public class CommonEvents {
         NBTTagCompound data = event.getEntityLiving().getEntityData();
         if (data.hasKey("CursedEarth") || data.getBoolean("CannotDropLoot"))
             event.setCanceled(true);
+    }
+
+    private static void removeSoulboundModifiers(EntityPlayer player) {
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            ItemStack stack = player.inventory.getStackInSlot(i);
+
+            NBTTagList tagList = TagUtil.getBaseModifiersTagList(stack);
+            int index = TinkerUtil.getIndexInList(tagList, "soulbound");
+            if (index >= 0) tagList.removeTag(index);
+            index = TinkerUtil.getIndexInList(tagList, "soulbound_armor");
+            if (index >= 0) tagList.removeTag(index);
+
+            tagList = TagUtil.getModifiersTagList(stack);
+            index = TinkerUtil.getIndexInList(tagList, "soulbound");
+            if (index >= 0) tagList.removeTag(index);
+            index = TinkerUtil.getIndexInList(tagList, "soulbound_armor");
+            if (index >= 0) tagList.removeTag(index);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onPlayerRespawn(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
+        if(!event.isWasDeath() || event.isCanceled()) {
+            return;
+        }
+        if(event.getOriginal() == null || event.getEntityPlayer() == null || event.getEntityPlayer() instanceof FakePlayer) {
+            return;
+        }
+        if(event.getEntityPlayer().getEntityWorld().getGameRules().getBoolean("keepInventory")) {
+            return;
+        }
+        removeSoulboundModifiers(event.getEntityPlayer());
     }
 }

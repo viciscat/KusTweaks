@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 3.3.0
+- Hide subtitles unless volume is 0
+- Restore broken attribute
+
 # 3.2.1
 - fix it trying to load client classes on the server
 

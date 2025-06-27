@@ -18,6 +18,7 @@
     "PlayerListMixin",
     "DamageSourceMixin",
     "EntityWitherMixin",
-    "WorldInvoker"
+    "WorldInvoker",
+    "GuisSubtitleOverlayMixin"
   ]
 }
