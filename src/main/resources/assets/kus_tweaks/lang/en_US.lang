@@ -30,3 +30,6 @@ kus_tweaks.effect.kindling=Kindling
 kus_tweaks.effect.redirection=Redirection
 kus_tweaks.effect.penetrator=Penetrator
 kus_tweaks.effect.drownier=Drownier
+
+# Enchantments
+enchantment.experienced=Experienced

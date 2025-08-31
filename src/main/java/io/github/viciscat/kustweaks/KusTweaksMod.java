@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.viciscat.kustweaks.block.HyaloclastiteBlock;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
+import io.github.viciscat.kustweaks.enchants.ExperiencedEnchantment;
 import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
 import io.github.viciscat.kustweaks.entity.render.RenderWitherSkullBeam;
 import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
@@ -64,6 +65,7 @@ public class KusTweaksMod {
         ForgeRegistries.POTIONS.register(RedirectionPotion.INSTANCE);
         ForgeRegistries.POTIONS.register(ResistancePenetrationPotion.INSTANCE);
         ForgeRegistries.POTIONS.register(DrownierPotion.INSTANCE);
+        ForgeRegistries.ENCHANTMENTS.register(ExperiencedEnchantment.INSTANCE);
 
         ResourceLocation location = new ResourceLocation(MOD_ID, "beam_charge");
         ForgeRegistries.SOUND_EVENTS.register(new SoundEvent(location).setRegistryName(location));

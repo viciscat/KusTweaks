@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 3.4.0
+- Experienced Enchantment
+
 # 3.3.0
 - Hide subtitles unless volume is 0
 - Restore broken attribute
