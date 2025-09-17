@@ -167,6 +167,8 @@ dependencies {
     implementation rfg.deobf("curse.maven:actually_additions-228404:3117927")
     implementation rfg.deobf("curse.maven:champions-307152:3177947")
     implementation rfg.deobf("curse.maven:armourers_workshop-229523:3101995")
+    implementation rfg.deobf("curse.maven:thermal_expansion-69163:2926431")
+    implementation rfg.deobf("curse.maven:dynamic_trees-252818:3812473-deobf-3812474-sources-3812476")
 
     implementation rfg.deobf(files("libs/mcheli-1.1.4.jar"))
     implementation rfg.deobf(files("libs/SRParasites-1.12.2v1.9.21.jar"))

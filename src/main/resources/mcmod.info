@@ -4,7 +4,7 @@
 	"version": "${mod_version}",
 	"mcversion": "1.12.2",
 	"description": "${mod_description}",
-	"dependencies": ["cofhcore", "baubles", "techguns", "lilliputian", "mcheli", "totaltinkers", "extrautils2", "potioncore", "ebwizardry", "srparasites", "srpcotesia", "wither-things", "enderskills", "roughmobs", "actuallyadditions", "champions"],
+	"dependencies": ["cofhcore", "baubles", "techguns", "lilliputian", "mcheli", "totaltinkers", "extrautils2", "potioncore", "ebwizardry", "srparasites", "srpcotesia", "wither-things", "enderskills", "roughmobs", "actuallyadditions", "champions", "thermalexpansion"],
 	"credits": "${mod_credits}",
 	"url": "${mod_url}",
 	"updateJSON": "${mod_update_json}",

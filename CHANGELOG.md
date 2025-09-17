@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 3.5.0
+- No more free cobble in the igneous extruder, you get Hyaloclastite.
+- Make arboreal extractor work with dynamic trees.
+- Add missing translation.
+
 # 3.4.0
 - Experienced Enchantment
 

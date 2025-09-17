@@ -18,6 +18,8 @@
     "SRPCAttributesMixin",
     "cofh.CofhEventHandlerMixin",
     "cofh.CorePotionsMixin",
+    "cofh.ExtruderManagerMixin",
+    "cofh.TileTapperMixin",
     "tg.GenericGunMixin",
     "tg.GenericGunMixin$ChargeMixin",
     "tg.GenericGunMixin$MeleeMixin",

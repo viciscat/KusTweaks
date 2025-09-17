@@ -24,6 +24,7 @@ attribute.name.kus_tweaks.directDamagePercentage=§0Extra Direct Damage
 attribute.name.kus_tweaks.explosionDamage=§cExplosion Damage
 attribute.name.kus_tweaks.healPercentDamage=§3Damage Redirection
 attribute.name.kus_tweaks.magicPercentDamage=§bMagic Minimum Damage Conversion Rate
+attribute.name.kus_tweaks.trueHealPercentDamage=§0True Damage Redirection
 
 # Potions
 kus_tweaks.effect.kindling=Kindling
