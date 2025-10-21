@@ -1,7 +1,6 @@
 package io.github.viciscat.kustweaks.potion;
 
 import arekkuusu.enderskills.common.skill.attribute.offense.ResistancePenetration;
-import io.github.viciscat.kustweaks.KusAttributes;
 import io.github.viciscat.kustweaks.KusTweaksMod;
 import net.minecraft.potion.Potion;
 
