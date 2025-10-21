@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 3.6.0
+- Buffer shulker bullets a fuck ton
+- Add "Splash" Trait Modifier to Tinker's Construct
+- Add Chaotic Amethyst Item
+- Change damage source of Poison potion effect to `kus_poison`
+- Change damage source of SRP's Bleed potion effect to `kus_parableed`
+- Change damage formula for Hemorrhage effect in total tinkers.
+
 # 3.5.0
 - No more free cobble in the igneous extruder, you get Hyaloclastite.
 - Make arboreal extractor work with dynamic trees.

@@ -32,11 +32,12 @@ public class ClientEvents {
         registerBlockItemModel(KusTweaksMod.hyaloclastiteBlock);
         registerBlockItemModel(KusTweaksMod.respawnAnchorBlock);
 
-        ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemMagnet, 0, new ModelResourceLocation(KusTweaksMod.itemMagnet.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemExperienceAbsorber, 0, new ModelResourceLocation(KusTweaksMod.itemExperienceAbsorber.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemInfiniteAntiGravPack, 0, new ModelResourceLocation(KusTweaksMod.itemInfiniteAntiGravPack.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusTweaksMod.itemEvilEssence, 0, new ModelResourceLocation(KusTweaksMod.itemEvilEssence.getRegistryName(), "inventory"));
-        AdditionalSlotRenderRegistry.register(KusTweaksMod.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));
+        ModelLoader.setCustomModelResourceLocation(KusItems.itemMagnet, 0, new ModelResourceLocation(KusItems.itemMagnet.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(KusItems.itemExperienceAbsorber, 0, new ModelResourceLocation(KusItems.itemExperienceAbsorber.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(KusItems.itemInfiniteAntiGravPack, 0, new ModelResourceLocation(KusItems.itemInfiniteAntiGravPack.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(KusItems.itemEvilEssence, 0, new ModelResourceLocation(KusItems.itemEvilEssence.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(KusItems.itemChaoticAmethyst, 0, new ModelResourceLocation(KusItems.itemChaoticAmethyst.getRegistryName(), "inventory"));
+        AdditionalSlotRenderRegistry.register(KusItems.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));
     }
 
     private static void registerBlockItemModel(Block block) {

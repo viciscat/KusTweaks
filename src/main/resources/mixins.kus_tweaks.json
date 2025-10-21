@@ -19,6 +19,8 @@
     "DamageSourceMixin",
     "EntityWitherMixin",
     "WorldInvoker",
-    "GuisSubtitleOverlayMixin"
+    "GuisSubtitleOverlayMixin",
+    "EntityShulkerBulletMixin",
+    "PotionMixin"
   ]
 }

@@ -7,7 +7,6 @@ import com.google.common.collect.MultimapBuilder;
 import com.srpcotesia.handler.EnhancedMobHandler;
 import com.srpcotesia.init.SRPCAttributes;
 import com.srpcotesia.util.ParasiteInteractions;
-import com.tmtravlr.potioncore.PotionCoreEffects;
 import com.tmtravlr.potioncore.potion.PotionRecoil;
 import io.github.viciscat.kustweaks.block.HyaloclastiteBlock;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
@@ -44,7 +43,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -72,10 +70,8 @@ public class CommonEvents {
         event.getRegistry().register(new HyaloclastiteBlock.Item(KusTweaksMod.hyaloclastiteBlock));
         //noinspection DataFlowIssue
         event.getRegistry().register(new ItemBlock(KusTweaksMod.respawnAnchorBlock).setRegistryName(KusTweaksMod.respawnAnchorBlock.getRegistryName()));
-        event.getRegistry().register(new ItemMagnet());
-        event.getRegistry().register(new ItemExperienceAbsorber());
-        event.getRegistry().register(new ItemInfiniteAntiGravPack("infinite_antigravpack", 123456789));
-        event.getRegistry().register(new Item().setRegistryName("evil_essence").setCreativeTab(CreativeTabs.MATERIALS).setTranslationKey(KusTweaksMod.MOD_ID + ".evil_essence"));
+
+        KusItems.registerItems(event.getRegistry());
     }
 
     @SubscribeEvent
@@ -262,7 +258,7 @@ public class CommonEvents {
         EntityPlayer player = event.getAttackingPlayer();
         if (player == null) return;
         int experience = event.getDroppedExperience();
-        if (BaublesApi.isBaubleEquipped(player, KusTweaksMod.itemExperienceAbsorber) >= 0) {
+        if (BaublesApi.isBaubleEquipped(player, KusItems.itemExperienceAbsorber) >= 0) {
             event.setCanceled(true);
             ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
 
@@ -311,7 +307,7 @@ public class CommonEvents {
         }
         if (!data.hasKey("CursedEarth")) return;
         event.getDrops().clear();
-        event.getDrops().add(event.getEntityLiving().dropItem(KusTweaksMod.itemEvilEssence, 1));
+        event.getDrops().add(event.getEntityLiving().dropItem(KusItems.itemEvilEssence, 1));
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

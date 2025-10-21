@@ -7,16 +7,13 @@ import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
 import io.github.viciscat.kustweaks.enchants.ExperiencedEnchantment;
 import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
 import io.github.viciscat.kustweaks.entity.render.RenderWitherSkullBeam;
-import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
-import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
-import io.github.viciscat.kustweaks.item.ItemMagnet;
 import io.github.viciscat.kustweaks.network.KusNetwork;
 import io.github.viciscat.kustweaks.potion.DrownierPotion;
 import io.github.viciscat.kustweaks.potion.KindlingPotion;
 import io.github.viciscat.kustweaks.potion.RedirectionPotion;
 import io.github.viciscat.kustweaks.potion.ResistancePenetrationPotion;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -46,17 +43,8 @@ public class KusTweaksMod {
     @GameRegistry.ObjectHolder("kus_tweaks:respawn_anchor")
     public static RespawnAnchorBlock respawnAnchorBlock;
 
-    @GameRegistry.ObjectHolder("kus_tweaks:item_magnet")
-    public static ItemMagnet itemMagnet;
-
-    @GameRegistry.ObjectHolder("kus_tweaks:infinite_antigravpack")
-    public static ItemInfiniteAntiGravPack itemInfiniteAntiGravPack;
-
-    @GameRegistry.ObjectHolder("kus_tweaks:evil_essence")
-    public static Item itemEvilEssence;
-
-    @GameRegistry.ObjectHolder("kus_tweaks:experience_absorber")
-    public static ItemExperienceAbsorber itemExperienceAbsorber;
+    public static final DamageSource POISON = new DamageSource("kus_poison").setMagicDamage().setDamageBypassesArmor();
+    public static final DamageSource PARASITE_BLEED = new DamageSource("kus_parableed").setDamageBypassesArmor();
 
 
     @Mod.EventHandler
@@ -87,6 +75,7 @@ public class KusTweaksMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         System.out.println("Dirt: " + Blocks.DIRT.getTranslationKey());
+        new SplashTrait().addItem(KusItems.itemChaoticAmethyst);
     }
 
     @Mod.EventHandler

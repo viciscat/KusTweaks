@@ -33,6 +33,9 @@
     "ItemWormMixin",
     "FoodEnergyRecipeMixin",
     "ItemWandMixin",
-    "XU2EntriesMixin"
+    "XU2EntriesMixin",
+    "SRPEffectBaseMixin",
+    "WeaponScimitarMixin",
+    "PotionHemorrhageEffectMixin"
   ]
 }
