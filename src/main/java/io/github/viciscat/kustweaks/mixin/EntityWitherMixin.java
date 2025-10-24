@@ -1,7 +1,10 @@
 package io.github.viciscat.kustweaks.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import io.github.viciscat.kustweaks.MixinMethods;
 import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.math.Vec3d;
@@ -11,6 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityWither.class)
@@ -31,6 +35,20 @@ public abstract class EntityWitherMixin extends EntityMob {
     private int nextShot = 0;
     @Unique
     private int extraShots = -1;
+
+    @ModifyExpressionValue(
+            method = "onLivingUpdate",
+            at = @At(value = "CONSTANT", args = "doubleValue=0.5"),
+            slice = @Slice(
+                    from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/boss/EntityWither;getWatchedTargetId(I)I"),
+                    to = @At(value = "INVOKE", target = "Lnet/minecraft/entity/monster/EntityMob;onLivingUpdate()V")
+            )
+    )
+    private double useAttribute(double value) {
+        IAttributeInstance instance = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        if (instance == null) return value;
+        return value * (instance.getAttributeValue() / instance.getBaseValue());
+    }
 
 
     @Inject(method = "updateAITasks", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/monster/EntityMob;updateAITasks()V", shift = At.Shift.AFTER))

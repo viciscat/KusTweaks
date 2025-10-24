@@ -1,5 +1,7 @@
 package io.github.viciscat.kustweaks.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -38,5 +40,10 @@ public abstract class EntityPlayerMixin extends Entity {
 	@Inject(method = "setSpawnPoint", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/EntityPlayer;dimension:I", opcode = Opcodes.GETFIELD, ordinal = 0))
 	private void setRespawnAnchorLocation(BlockPos pos, boolean forced, CallbackInfo ci) {
 		setSpawnDimension(dimension);
+	}
+
+	@WrapOperation(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;isSprinting()Z"))
+	private boolean changeSprinting(EntityPlayer instance, Operation<Boolean> original) {
+		return false;
 	}
 }

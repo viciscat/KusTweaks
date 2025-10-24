@@ -20,7 +20,7 @@ public class PotionHemorrhageEffectMixin implements ExtendedHemorrhageEffect {
         this.kusTweaks$toolDamage = toolDamage;
     }
 
-    @WrapOperation(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/config/Property;getDouble()D", ordinal = 0), remap = true)
+    @WrapOperation(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/config/Property;getDouble()D", ordinal = 0, remap = false), remap = true)
     private double onUpdate$getDouble(Property instance, Operation<Double> original) {
         return original.call(instance) * Math.max(1.0, Math.pow(kusTweaks$toolDamage / 5.0, 0.676));
     }

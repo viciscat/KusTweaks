@@ -26,28 +26,34 @@ import techguns.client.render.RenderAdditionalSlotItem;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientEvents {
 
-    @SuppressWarnings("DataFlowIssue")
 	@SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         registerBlockItemModel(KusTweaksMod.hyaloclastiteBlock);
         registerBlockItemModel(KusTweaksMod.respawnAnchorBlock);
 
-        ModelLoader.setCustomModelResourceLocation(KusItems.itemMagnet, 0, new ModelResourceLocation(KusItems.itemMagnet.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusItems.itemExperienceAbsorber, 0, new ModelResourceLocation(KusItems.itemExperienceAbsorber.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusItems.itemInfiniteAntiGravPack, 0, new ModelResourceLocation(KusItems.itemInfiniteAntiGravPack.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusItems.itemEvilEssence, 0, new ModelResourceLocation(KusItems.itemEvilEssence.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(KusItems.itemChaoticAmethyst, 0, new ModelResourceLocation(KusItems.itemChaoticAmethyst.getRegistryName(), "inventory"));
+        registerItemModel(KusItems.itemMagnet);
+        registerItemModel(KusItems.itemExperienceAbsorber);
+        registerItemModel(KusItems.itemInfiniteAntiGravPack);
+        registerItemModel(KusItems.itemEvilEssence);
+        registerItemModel(KusItems.itemChaoticAmethyst);
+        registerItemModel(KusItems.itemGlassHelmet);
+        registerItemModel(KusItems.itemGlassChestplate);
+        registerItemModel(KusItems.itemGlassLeggings);
+        registerItemModel(KusItems.itemGlassBoots);
         AdditionalSlotRenderRegistry.register(KusItems.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));
     }
-
-    private static void registerBlockItemModel(Block block) {
-        Item item = Item.getItemFromBlock(block);
+    
+    private static void registerItemModel(Item item) {
         ResourceLocation registryName = item.getRegistryName();
         if (registryName == null) {
-            KusTweaksMod.LOGGER.error("Couldn't find registry name for block {}", block.getClass().getName());
+            KusTweaksMod.LOGGER.error("Couldn't find registry name for item {}", item.getClass().getName());
             return;
         }
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(registryName, "inventory"));
+    }
+
+    private static void registerBlockItemModel(Block block) {
+        registerItemModel(Item.getItemFromBlock(block));
     }
 
     @SubscribeEvent

@@ -8,19 +8,20 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "EntityPlayerMixin",
-    "EntityPlayerMPMixin",
-    "EnumEnchantmentTypeMixin",
-    "EnumEnchantmentTypeMixin\$WeaponMixin",
+    "DamageSourceMixin",
     "EntityGuardianMixin",
     "EntityGuardianMixin\$AttackAIMixin",
-    "ExplosionMixin",
-    "PlayerListMixin",
-    "DamageSourceMixin",
-    "EntityWitherMixin",
-    "WorldInvoker",
-    "GuisSubtitleOverlayMixin",
+    "EntityLivingBaseMixin",
+    "EntityPlayerMixin",
+    "EntityPlayerMPMixin",
     "EntityShulkerBulletMixin",
-    "PotionMixin"
+    "EntityWitherMixin",
+    "EnumEnchantmentTypeMixin",
+    "EnumEnchantmentTypeMixin\$WeaponMixin",
+    "ExplosionMixin",
+    "GuisSubtitleOverlayMixin",
+    "PlayerListMixin",
+    "PotionMixin",
+    "WorldInvoker"
   ]
 }

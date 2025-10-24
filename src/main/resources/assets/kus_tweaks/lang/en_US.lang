@@ -9,6 +9,10 @@ item.kus_tweaks.infinite_antigravpack.name=§dInfinite§r Anti Gravity Device
 item.kus_tweaks.evil_essence.name=Evil Essence
 item.kus_tweaks.experience_absorber.name=Experience Absorber
 item.kus_tweaks.chaotic_amethyst.name=§5Chaotic Amethyst
+item.kus_tweaks.glass_helmet.name=Glass Helmet
+item.kus_tweaks.glass_chestplate.name=Glass Chestplate
+item.kus_tweaks.glass_leggings.name=Glass Leggings
+item.kus_tweaks.glass_boots.name=Glass Boots
 
 # Attributes
 attribute.name.kus_tweaks.tgReloadSpeed=§eReload Speed

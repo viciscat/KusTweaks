@@ -1,6 +1,7 @@
 package io.github.viciscat.kustweaks;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -59,5 +60,11 @@ public final class KusAttributes {
         //noinspection ConstantValue
         if (instance == null) return attribute.getDefaultValue();
         return instance.getAttributeValue();
+    }
+
+    public static double getSpeedRatio(EntityLivingBase entity) {
+        IAttributeInstance instance = entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        if (instance == null) return 1;
+        return instance.getAttributeValue() / instance.getBaseValue();
     }
 }
