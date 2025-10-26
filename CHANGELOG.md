@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 3.8.0
+- Make ender skills' final flash slow you down
+- Make ender skills' invulnerable even more invulnerable
+
 # 3.7.0
 - Make entities in the air be affect by the movement speed attribute
 - Reduce the resolution of the mod icon. Why was it that big

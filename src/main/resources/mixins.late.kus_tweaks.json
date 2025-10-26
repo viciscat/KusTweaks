@@ -12,6 +12,7 @@
     "EntityBaseBulletMixin",
     "EntityParasiteBaseMixin",
     "EntityPMalleableMixin",
+    "EntityFinalFlashMixin",
     "ExplosionTinkersBaseMixin",
     "FoodEnergyRecipeMixin",
     "ItemWandMixin",

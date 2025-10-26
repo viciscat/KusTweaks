@@ -1,5 +1,8 @@
 package io.github.viciscat.kustweaks;
 
+import arekkuusu.enderskills.common.skill.DynamicModifier;
+import arekkuusu.enderskills.common.skill.ModEffects;
+import arekkuusu.enderskills.common.skill.SkillHelper;
 import baubles.api.BaublesApi;
 import com.dhanantry.scapeandrunparasites.entity.ai.misc.EntityPMalleable;
 import com.google.common.collect.Multimap;
@@ -34,6 +37,7 @@ import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -55,6 +59,20 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class CommonEvents {
+
+    private static final DynamicModifier NORMAL_ATTRIBUTE = new DynamicModifier(
+            "411ce9ac-5bcf-4a7f-8682-2f1a0e8d88aa",
+            KusTweaksMod.MOD_ID + ":ender_skills_invulnerable",
+            KusAttributes.HEAL_PERCENT_DAMAGE,
+            Constants.AttributeModifierOperation.ADD
+    );
+    private static final DynamicModifier TRUE_ATTRIBUTE = new DynamicModifier(
+            "411ce9ac-5bcf-4a7f-8682-2f1a0e8d88aa",
+            KusTweaksMod.MOD_ID + ":ender_skills_invulnerable",
+            KusAttributes.TRUE_HEAL_PERCENT_DAMAGE,
+            Constants.AttributeModifierOperation.ADD
+    );
+    
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(new HyaloclastiteBlock());
@@ -137,6 +155,20 @@ public class CommonEvents {
             PotionEffect effect = mob.getActivePotionEffect(DrownierPotion.INSTANCE);
             if (effect != null) {
                 event.setAmount(event.getAmount() * (1.1f + effect.getAmplifier() * 0.1f));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        EntityLivingBase entity = event.getEntityLiving();
+        if (!ModEffects.INVULNERABLE.isClientWorld(entity)) {
+            if (SkillHelper.isActive(entity, ModEffects.INVULNERABLE)) {
+                NORMAL_ATTRIBUTE.apply(entity, 1);
+                TRUE_ATTRIBUTE.apply(entity, 1);
+            } else {
+                NORMAL_ATTRIBUTE.remove(entity);
+                TRUE_ATTRIBUTE.remove(entity);
             }
         }
     }
