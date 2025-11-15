@@ -62,9 +62,8 @@ public abstract class TileTapperMixin extends TileDeviceBase {
         BlockRooty rooty = TreeHelper.getRooty(state);
         if (rooty == null) return;
         TreeFamily family = rooty.getFamily(state, world, down);
-        if (family instanceof TreeFamilyVanilla) {
-            TreeFamilyVanilla vanilla = (TreeFamilyVanilla) family;
-            int metadata = vanilla.woodType.getMetadata();
+        if (family instanceof TreeFamilyVanilla vanilla) {
+			int metadata = vanilla.woodType.getMetadata();
             if (metadata < 4) {
                 cir.setReturnValue(TapperManager.mappingExists(new ItemStack(Blocks.LOG, 1, metadata)));
             } else {
@@ -99,9 +98,8 @@ public abstract class TileTapperMixin extends TileDeviceBase {
         validTree = part.getRadius(trunkState) >= 5;
         if (!validTree) return true;
         TreeFamily family = rooty.getFamily(state, world, down);
-        if (family instanceof TreeFamilyVanilla) {
-            TreeFamilyVanilla vanilla = (TreeFamilyVanilla) family;
-            int metadata = vanilla.woodType.getMetadata();
+        if (family instanceof TreeFamilyVanilla vanilla) {
+			int metadata = vanilla.woodType.getMetadata();
             if (metadata < 4) {
                 kusTweaks$dynamicWoodType = new ItemStack(Blocks.LOG, 1, metadata);
             } else {

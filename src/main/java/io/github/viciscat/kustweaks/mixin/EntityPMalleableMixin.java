@@ -36,10 +36,9 @@ public abstract class EntityPMalleableMixin extends EntityParasiteBase {
         if (victim.world.isRemote) return;
         Entity e = source.getTrueSource();
 
-        if (!(e instanceof EntityLivingBase)) return;
-        EntityLivingBase living = (EntityLivingBase) e;
+        if (!(e instanceof EntityLivingBase living)) return;
 
-        if (source.getImmediateSource() instanceof GenericProjectile) {
+		if (source.getImmediateSource() instanceof GenericProjectile) {
             if (living instanceof EntityPlayer) {
                 XPManager.setAttackingPlayer(this, (EntityPlayer)living);
             }

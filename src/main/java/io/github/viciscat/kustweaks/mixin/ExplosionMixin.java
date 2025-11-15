@@ -27,9 +27,8 @@ public abstract class ExplosionMixin {
         EntityLivingBase explosivePlacedBy = getExplosivePlacedBy();
         if (explosivePlacedBy != null) {
             return original * (float) KusAttributes.getAttributeOrDefault(explosivePlacedBy, KusAttributes.EXPLOSION_SIZE_MULTIPLIER);
-        } else if (exploder instanceof EntityArrow) {
-            EntityArrow arrow = (EntityArrow) exploder;
-            if (arrow.shootingEntity instanceof EntityLivingBase) {
+        } else if (exploder instanceof EntityArrow arrow) {
+			if (arrow.shootingEntity instanceof EntityLivingBase) {
                 return original * (float) KusAttributes.getAttributeOrDefault((EntityLivingBase) arrow.shootingEntity, KusAttributes.EXPLOSION_SIZE_MULTIPLIER);
             }
         }

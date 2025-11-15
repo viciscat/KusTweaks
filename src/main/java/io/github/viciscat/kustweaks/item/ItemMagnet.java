@@ -34,8 +34,7 @@ public class ItemMagnet extends Item implements IBauble {
 	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
 		IBauble.super.onWornTick(itemstack, player);
 		if (player.world.isRemote) return;
-		if (player instanceof EntityPlayer) {
-			EntityPlayer playerEntity = (EntityPlayer) player;
+		if (player instanceof EntityPlayer playerEntity) {
 			pickupItems(playerEntity);
 		}
 	}
@@ -44,8 +43,7 @@ public class ItemMagnet extends Item implements IBauble {
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 		if (worldIn.isRemote) return;
-		if (entityIn instanceof EntityPlayer) {
-			EntityPlayer playerEntity = (EntityPlayer) entityIn;
+		if (entityIn instanceof EntityPlayer playerEntity) {
 			pickupItems(playerEntity);
 		}
 	}

@@ -28,9 +28,8 @@ public abstract class SRPCAttributesMixin {
 
     @Inject(method = "onProjectileCreation", at = @At("TAIL"), remap = false)
     private static void addTechgunsProjectile(EntityJoinWorldEvent event, CallbackInfo ci) {
-        if (event.getEntity() instanceof GenericProjectile) {
-            GenericProjectile projectile = (GenericProjectile) event.getEntity();
-            EntityLivingBase shooter = ((GenericProjectileAccessor) projectile).getShooter();
+        if (event.getEntity() instanceof GenericProjectile projectile) {
+			EntityLivingBase shooter = ((GenericProjectileAccessor) projectile).getShooter();
             if (shooter != null) attachMinDamage(shooter, projectile);
         }
     }

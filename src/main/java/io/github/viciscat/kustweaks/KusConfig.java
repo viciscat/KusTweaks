@@ -107,40 +107,16 @@ public class KusConfig {
 		}
 	}
 
-	private static class PotionRaw {
-		private final String potionName;
-		private final int amplifier;
-		private final int duration;
-
-		public PotionRaw(String potionName, int amplifier, int duration) {
-			this.potionName = potionName;
-			this.amplifier = amplifier;
-			this.duration = duration;
-		}
-
+	private record PotionRaw(String potionName, int amplifier, int duration) {
 		public static PotionRaw parsePotion(JsonObject potion) {
 			String potionName = potion.get("potion").getAsString();
 			int amplifier = potion.get("amplifier").getAsInt();
 			int duration = potion.get("duration").getAsInt() * 20;
 			return new PotionRaw(potionName, amplifier, duration);
 		}
-
-		@Override
-		public String toString() {
-			return new ToStringBuilder(this)
-					.append("potionName", potionName)
-					.append("amplifier", amplifier)
-					.append("duration", duration)
-					.toString();
-		}
 	}
 
-	private static class DimensionalDebuffRaw {
-		private final OptionalInt dimensionId;
-		private final String dimensionName;
-		private final PotionRaw potion;
-		private final int timer;
-
+	private record DimensionalDebuffRaw(OptionalInt dimensionId, String dimensionName, PotionRaw potion, int timer) {
 		public static DimensionalDebuffRaw parseDimensionalDebuff(JsonObject debuff) {
 			JsonPrimitive dimension = debuff.get("dimension").getAsJsonPrimitive();
 			PotionRaw potionRaw = PotionRaw.parsePotion(debuff.getAsJsonObject("effect"));
@@ -153,44 +129,13 @@ public class KusConfig {
 		}
 
 		public DimensionalDebuffRaw(int dimensionId, PotionRaw potion, int timer) {
-			this.dimensionId = OptionalInt.of(dimensionId);
-			this.dimensionName = null;
-			this.potion = potion;
-			this.timer = timer;
+			this(OptionalInt.of(dimensionId), null, potion, timer);
 		}
+
 		public DimensionalDebuffRaw(String dimensionName, PotionRaw potion, int timer) {
-			this.dimensionId = OptionalInt.empty();
-			this.dimensionName = dimensionName;
-			this.potion = potion;
-			this.timer = timer;
-		}
-
-		@Override
-		public String toString() {
-			return new ToStringBuilder(this)
-					.append("dimensionId", dimensionId)
-					.append("dimensionName", dimensionName)
-					.append("potion", potion)
-					.append("timer", timer)
-					.toString();
+			this(OptionalInt.empty(), dimensionName, potion, timer);
 		}
 	}
 
-	public static class Debuff {
-		private final PotionEffect potionEffect;
-		private final int timer;
-
-		public Debuff(PotionEffect potionEffect, int timer) {
-			this.potionEffect = potionEffect;
-			this.timer = timer;
-		}
-
-		public PotionEffect getPotionEffect() {
-			return potionEffect;
-		}
-
-		public int getTimer() {
-			return timer;
-		}
-	}
+	public record Debuff(PotionEffect potionEffect, int timer) {}
 }

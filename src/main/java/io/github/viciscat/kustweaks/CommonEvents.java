@@ -103,8 +103,8 @@ public class CommonEvents {
             if (playerEntity.dimension != dimensionType.getId() || playerEntity.capabilities.isCreativeMode) continue;
             int ticksExisted = playerEntity.ticksExisted;
             for (KusConfig.Debuff debuff : debuffs) {
-                if (ticksExisted % debuff.getTimer() == 0) {
-                    playerEntity.addPotionEffect(new PotionEffect(debuff.getPotionEffect()));
+                if (ticksExisted % debuff.timer() == 0) {
+                    playerEntity.addPotionEffect(new PotionEffect(debuff.potionEffect()));
                 }
             }
         }
@@ -131,13 +131,11 @@ public class CommonEvents {
         Entity entity = event.getEntity();
         Entity src = event.getSource().getImmediateSource();
 
-        if (!(entity instanceof EntityLivingBase)) return;
-        EntityLivingBase mob = (EntityLivingBase) entity;
+        if (!(entity instanceof EntityLivingBase mob)) return;
 
-        //logger.debug(damage + " " + event.getSource().getDamageType() + " pre armor");
-        if (src instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) src;
-            float damagePercentOOF = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.OUT_OF_WORLD_PERCENTAGE).getAttributeValue();
+		//logger.debug(damage + " " + event.getSource().getDamageType() + " pre armor");
+        if (src instanceof EntityPlayer player) {
+			float damagePercentOOF = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.OUT_OF_WORLD_PERCENTAGE).getAttributeValue();
             float damagePercentDirect = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.DIRECT_DAMAGE_PERCENTAGE).getAttributeValue();
             if (damagePercentOOF > 0.0F){
                 entity.hurtResistantTime = 0;
@@ -181,9 +179,8 @@ public class CommonEvents {
 
         if (!(entity instanceof EntityLivingBase)) return;
 
-        if (src instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) src;
-            float damagePercentExplosion = (float) KusAttributes.getAttributeOrDefault(player, KusAttributes.EXPLOSION_DAMAGE);
+        if (src instanceof EntityPlayer player) {
+			float damagePercentExplosion = (float) KusAttributes.getAttributeOrDefault(player, KusAttributes.EXPLOSION_DAMAGE);
 
             if (damagePercentExplosion > 0.0F && event.getSource().isExplosion()) {
                 // Apply custom effect for explosion damage
@@ -198,15 +195,13 @@ public class CommonEvents {
         float damage = event.getAmount();
         Entity src = event.getSource().getImmediateSource();
         //logger.debug(damage + " " + event.getSource().getDamageType() + " post armor");
-        if (src instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) src;
-            //logger.debug(src.getName() + " dealt " + damage);
+        if (src instanceof EntityPlayer player) {
+			//logger.debug(src.getName() + " dealt " + damage);
             float healPercent = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.LIFE_STEAL_PERCENTAGE).getAttributeValue();
             player.heal(damage * healPercent);
         }
-        if (event.getEntityLiving() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            float healPercent = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.HEAL_PERCENT_DAMAGE).getAttributeValue();
+        if (event.getEntityLiving() instanceof EntityPlayer player) {
+			float healPercent = (float) player.getAttributeMap().getAttributeInstance(KusAttributes.HEAL_PERCENT_DAMAGE).getAttributeValue();
             player.heal(damage * healPercent);
         }
     }
@@ -219,11 +214,9 @@ public class CommonEvents {
         DamageSource source = event.getSource();
         Entity e = source.getTrueSource();
 
-        if (!source.isMagicDamage() || victim instanceof EntityPMalleable || !(e instanceof EntityLivingBase)) return;
+        if (!source.isMagicDamage() || victim instanceof EntityPMalleable || !(e instanceof EntityLivingBase living)) return;
 
-        EntityLivingBase living = (EntityLivingBase) e;
-
-        if (ParasiteInteractions.isParasite(living) && ParasiteInteractions.isParasite(victim)) return;
+		if (ParasiteInteractions.isParasite(living) && ParasiteInteractions.isParasite(victim)) return;
 
         float pd = (float) KusAttributes.getAttributeOrDefault(living, KusAttributes.MAGIC_PERCENT_DAMAGE);
         float minDamage = event.getAmount() * pd;
@@ -241,15 +234,13 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
         Entity eventEntity = event.getEntity();
-        if (eventEntity instanceof EntityLivingBase) {
-            EntityLivingBase entity = (EntityLivingBase) eventEntity;
-            AbstractAttributeMap attributeMap = entity.getAttributeMap();
+        if (eventEntity instanceof EntityLivingBase entity) {
+			AbstractAttributeMap attributeMap = entity.getAttributeMap();
             for (IAttribute attribute : KusAttributes.ALL_ATTRIBUTES) {
                 attributeMap.registerAttribute(attribute);
             }
-        } else if (eventEntity instanceof EntityElderGuardian) {
-            EntityElderGuardian elderGuardian = (EntityElderGuardian) eventEntity;
-            elderGuardian.addPotionEffect(new PotionEffect(PotionRecoil.INSTANCE, Integer.MAX_VALUE, 0, false, false));
+        } else if (eventEntity instanceof EntityElderGuardian elderGuardian) {
+			elderGuardian.addPotionEffect(new PotionEffect(PotionRecoil.INSTANCE, Integer.MAX_VALUE, 0, false, false));
         }
     }
 
@@ -310,9 +301,8 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onEntityChangeDimension(EntityTravelToDimensionEvent event) {
         if (event.getEntity().getEntityWorld().isRemote) return;
-        if (event.getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
-            playerToHealth.put(player.getUniqueID(), player.getHealth());
+        if (event.getEntity() instanceof EntityPlayer player) {
+			playerToHealth.put(player.getUniqueID(), player.getHealth());
         }
     }
 
