@@ -13,6 +13,15 @@ item.kus_tweaks.glass_helmet.name=Glass Helmet
 item.kus_tweaks.glass_chestplate.name=Glass Chestplate
 item.kus_tweaks.glass_leggings.name=Glass Leggings
 item.kus_tweaks.glass_boots.name=Glass Boots
+item.kus_tweaks.ammo_gun_upgrade.name=Gun Upgrade: Ammo
+item.kus_tweaks.bounce_gun_upgrade.name=Gun Upgrade: Bounce
+item.kus_tweaks.damage_gun_upgrade.name=Gun Upgrade: Damage
+item.kus_tweaks.explosion_size_gun_upgrade.name=Gun Upgrade: Explosion Size
+item.kus_tweaks.fire_rate_gun_upgrade.name=Gun Upgrade: Fire Rate
+item.kus_tweaks.multishot_gun_upgrade.name=Gun Upgrade: Multishot
+item.kus_tweaks.pierce_gun_upgrade.name=Gun Upgrade: Pierce
+item.kus_tweaks.refund_chance_gun_upgrade.name=Gun Upgrade: Refund Chance
+item.kus_tweaks.reload_speed_gun_upgrade.name=Gun Upgrade: Reload Speed
 
 # Attributes
 attribute.name.kus_tweaks.tgReloadSpeed=§eReload Speed

@@ -1,5 +1,6 @@
 package io.github.viciscat.kustweaks;
 
+import io.github.viciscat.kustweaks.item.ItemGunUpgrade;
 import io.github.viciscat.kustweaks.network.KusNetwork;
 import io.github.viciscat.kustweaks.network.RandomRespawnPacket;
 import net.minecraft.block.Block;
@@ -40,6 +41,9 @@ public class ClientEvents {
         registerItemModel(KusItems.itemGlassChestplate);
         registerItemModel(KusItems.itemGlassLeggings);
         registerItemModel(KusItems.itemGlassBoots);
+		for (ItemGunUpgrade upgrade : KusItems.gunUpgrades) {
+			ModelLoader.setCustomModelResourceLocation(upgrade, 0, new ModelResourceLocation(upgrade.gunUpgrade.model(), "inventory"));
+		}
         AdditionalSlotRenderRegistry.register(KusItems.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));
     }
     

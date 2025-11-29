@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 3.9.0
+- Gun upgrades
+- Deatomizer min damage
+
 # 3.8.0
 - Make ender skills' final flash slow you down
 - Make ender skills' invulnerable even more invulnerable

@@ -22,6 +22,8 @@
     "GuisSubtitleOverlayMixin",
     "PlayerListMixin",
     "PotionMixin",
-    "WorldInvoker"
+    "WorldInvoker",
+    "WorldMixin",
+    "ContainerMixin"
   ]
 }

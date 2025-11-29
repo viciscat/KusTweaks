@@ -36,6 +36,10 @@
     "tg.GenericProjectileAccessor",
     "tg.GenericProjectileMixin",
     "tg.TGExplosionMixin",
+    "tg.UpgradeBenchContainerMixin",
+    "tg.TGGuiEventsMixin",
+    "tg.AmmoSwitchRecipeMixin",
+    "tg.DeatomizerProjectileMixin",
     "tg.particle.CommonParticleMixin",
     "tg.particle.CommonRocketParticleMixin",
     "tg.particle.TFGParticleMixin"

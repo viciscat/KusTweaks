@@ -7,7 +7,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
+import io.github.viciscat.kustweaks.GunUpgrade;
 import io.github.viciscat.kustweaks.KusAttributes;
+import io.github.viciscat.kustweaks.capability.UpgradableGun;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +20,7 @@ import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -44,7 +47,7 @@ public abstract class GenericGunMixin {
                                      @Share("bulletMultiplier") LocalIntRef bulletMultiplier, @Share("spreadMultiplier")LocalFloatRef spreadMultiplier) {
         float multiplier = 1;
         // the attribute itself.
-        double chance = KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_MULTISHOT_CHANCE);
+		double chance = UpgradableGun.getOrEmpty(itemstack).getUpgradeStack(GunUpgrade.MULTISHOT) * 0.1 + KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_MULTISHOT_CHANCE);
         spreadMultiplier.set(1 + (float) chance / 10.f);
         while (chance >= 1d) {
             multiplier++;
@@ -78,7 +81,7 @@ public abstract class GenericGunMixin {
             method = "shootGunPrimary",
             at = @At(value = "INVOKE", target = "Ltechguns/items/guns/GenericGun;useAmmo(Lnet/minecraft/item/ItemStack;I)I"))
     private int refundAmmoChanceShoot(GenericGun instance, ItemStack stack, int amount, Operation<Integer> original, @Local(argsOnly = true) EntityPlayer player) {
-        double attributeValue = KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_AMMO_REFUND_CHANCE);
+        double attributeValue = kusTweaks$customScaling(UpgradableGun.getOrEmpty(stack).getUpgradeStack(GunUpgrade.REFUND_CHANCE)) + KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_AMMO_REFUND_CHANCE);
         if (!getCurrentAmmoVariantKey(stack).equals("nuke") && (attributeValue >= 1d || Math.random() < attributeValue))
             return 0;
         return original.call(instance, stack, amount);
@@ -101,8 +104,8 @@ public abstract class GenericGunMixin {
             method = "shootGunPrimary",
             at = @At(value = "FIELD", target = "Ltechguns/items/guns/GenericGun;reloadtime:I", opcode = Opcodes.GETFIELD)
     )
-    private int editReloadTimeShoot(int original, @Local(argsOnly = true) EntityPlayer player) {
-        double attribute = KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_RELOAD_SPEED);
+    private int editReloadTimeShoot(int original, @Local(argsOnly = true) EntityPlayer player, @Local(argsOnly = true) ItemStack stack) {
+        double attribute = kusTweaks$customScaling(UpgradableGun.getOrEmpty(stack).getUpgradeStack(GunUpgrade.RELOAD_SPEED)) + KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_RELOAD_SPEED);
         return Math.round(original / (float) attribute);
     }
 
@@ -111,8 +114,8 @@ public abstract class GenericGunMixin {
             method = "tryForcedReload",
             at = @At(value = "FIELD", target = "Ltechguns/items/guns/GenericGun;reloadtime:I", opcode = Opcodes.GETFIELD)
     )
-    private int editReloadTimeForceReload(int original, @Local(argsOnly = true) EntityPlayer player) {
-        double attribute = KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_RELOAD_SPEED);
+    private int editReloadTimeForceReload(int original, @Local(argsOnly = true) EntityPlayer player, @Local(argsOnly = true) ItemStack stack) {
+        double attribute = kusTweaks$customScaling(UpgradableGun.getOrEmpty(stack).getUpgradeStack(GunUpgrade.RELOAD_SPEED)) + KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_RELOAD_SPEED);
         return Math.round(original / (float) attribute);
     }
 
@@ -122,8 +125,8 @@ public abstract class GenericGunMixin {
             method = "shootGunPrimary",
             at = @At(value = "FIELD", target = "Ltechguns/items/guns/GenericGun;minFiretime:I", opcode = Opcodes.GETFIELD)
     )
-    private int editFireTimeShoot(int original, @Local(argsOnly = true) EntityPlayer player) {
-        double attribute = KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_FIRE_RATE);
+    private int editFireTimeShoot(int original, @Local(argsOnly = true) EntityPlayer player, @Local(argsOnly = true) ItemStack stack) {
+        double attribute = UpgradableGun.getOrEmpty(stack).getUpgradeStack(GunUpgrade.FIRE_RATE) * 0.1 + KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_FIRE_RATE);
         return Math.round(original / (float) attribute);
     }
 
@@ -132,10 +135,20 @@ public abstract class GenericGunMixin {
             method = "tryForcedReload",
             at = @At(value = "FIELD", target = "Ltechguns/items/guns/GenericGun;minFiretime:I", opcode = Opcodes.GETFIELD)
     )
-    private int editFireTimeForceReload(int original, @Local(argsOnly = true) EntityPlayer player) {
-        double attribute = KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_FIRE_RATE);
+    private int editFireTimeForceReload(int original, @Local(argsOnly = true) EntityPlayer player, @Local(argsOnly = true) ItemStack stack) {
+        double attribute = UpgradableGun.getOrEmpty(stack).getUpgradeStack(GunUpgrade.FIRE_RATE) * 0.1 + KusAttributes.getAttributeOrDefault(player, KusAttributes.TECHGUNS_FIRE_RATE);
         return Math.round(original / (float) attribute);
     }
+
+	@ModifyExpressionValue(
+			remap = false,
+			method = {"getAmmoOnUnload", "tryForcedReload", "isFullyLoaded", "getPercentAmmoLeft", "reloadAmmo(Lnet/minecraft/item/ItemStack;)V", "onCreated"},
+			at = @At(value = "FIELD", target = "Ltechguns/items/guns/GenericGun;clipsize:I", opcode = Opcodes.GETFIELD)
+	)
+	private int editClipSize(int original, @Local(argsOnly = true) ItemStack stack) {
+		int upgradeStack = UpgradableGun.getOrEmpty(stack).getUpgradeStack(GunUpgrade.AMMO);
+		return original + Math.max((int) (original * 0.1f), 1) * upgradeStack;
+	}
 
 
     @Mixin(GenericGunCharge.class)
@@ -173,6 +186,11 @@ public abstract class GenericGunMixin {
             return Math.round(original / (float) attribute);
         }
     }
+
+	@Unique
+	private static double kusTweaks$customScaling(int stacks) {
+		return Math.min(stacks, 6) * 0.1 + (stacks > 6 ? 0.39f * (1 - Math.exp(-0.108 * (stacks - 6))) : 0);
+	}
 
     @Mixin(GenericGunMeleeCharge.class)
     public static class MeleeMixin {

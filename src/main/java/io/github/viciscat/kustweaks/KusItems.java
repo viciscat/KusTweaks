@@ -1,6 +1,7 @@
 package io.github.viciscat.kustweaks;
 
 import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
+import io.github.viciscat.kustweaks.item.ItemGunUpgrade;
 import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
 import io.github.viciscat.kustweaks.item.ItemMagnet;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class KusItems {
@@ -46,6 +48,8 @@ public class KusItems {
     @GameRegistry.ObjectHolder("kus_tweaks:glass_boots")
     public static ItemArmor itemGlassBoots;
 
+	public static ItemGunUpgrade[] gunUpgrades;
+
     
     public static void registerItems(IForgeRegistry<Item> registry) {
         registry.register(new ItemMagnet());
@@ -58,5 +62,11 @@ public class KusItems {
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.CHEST).setRegistryName("glass_chestplate").setTranslationKey(PREFIX + "glass_chestplate").setMaxDamage(56));
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.LEGS).setRegistryName("glass_leggings").setTranslationKey(PREFIX + "glass_leggings").setMaxDamage(52));
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.FEET).setRegistryName("glass_boots").setTranslationKey(PREFIX + "glass_boots").setMaxDamage(45));
+
+		gunUpgrades = Arrays.stream(GunUpgrade.values()).map(ItemGunUpgrade::new).toArray(ItemGunUpgrade[]::new);
+		for (ItemGunUpgrade gunUpgrade : gunUpgrades) {
+			gunUpgrade.setCreativeTab(CreativeTabs.MATERIALS);
+			registry.register(gunUpgrade.setTranslationKey(PREFIX + gunUpgrade.getRegistryName().getPath()));
+		}
     }
 }

@@ -1,6 +1,6 @@
 package io.github.viciscat.kustweaks.mixin.tg;
 
-import io.github.viciscat.kustweaks.KusAttributes;
+import io.github.viciscat.kustweaks.injected.ExtendedGenericProjectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
@@ -22,8 +22,8 @@ public class TGExplosionMixin {
     @Inject(method = "<init>", at = @At("TAIL"), remap = false)
     private void increaseRadius(World world, Entity exploder, Entity projectile, double x, double y, double z, double primaryDamage, double secondaryDamage, double primaryRadius, double secondaryRadius, double blockDamageFactor, CallbackInfo ci) {
         if (exploder instanceof EntityLivingBase) {
-            EntityLivingBase entity = (EntityLivingBase) exploder;
-            double radiusMultiplier = KusAttributes.getAttributeOrDefault(entity, KusAttributes.EXPLOSION_SIZE_MULTIPLIER);
+			double radiusMultiplier = 1;
+			if (projectile instanceof ExtendedGenericProjectile extendedGenericProjectile) radiusMultiplier *= extendedGenericProjectile.kusTweaks$explosionSizeMult();
             this.primaryRadius *= radiusMultiplier;
             this.secondaryRadius *= radiusMultiplier;
         }
