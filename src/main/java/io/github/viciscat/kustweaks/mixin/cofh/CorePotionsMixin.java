@@ -21,7 +21,7 @@ public class CorePotionsMixin {
     )
     private PotionEffect nerfResistance4(Potion potionIn, int durationIn, int amplifierIn, Operation<PotionEffect> original, @Local(argsOnly = true) PotionType type) {
         if (type == resistance && amplifierIn == 3) {
-            return original.call(potionIn, 3*20, amplifierIn);
+            return original.call(potionIn, 5*20, amplifierIn);
         }
         return original.call(potionIn, durationIn, amplifierIn);
     }
