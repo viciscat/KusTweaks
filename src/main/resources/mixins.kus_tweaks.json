@@ -8,6 +8,7 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ContainerMixin",
     "DamageSourceMixin",
     "EntityGuardianMixin",
     "EntityGuardianMixin$AttackAIMixin",
@@ -23,8 +24,7 @@
     "PlayerListMixin",
     "PotionMixin",
     "WorldInvoker",
-    "WorldMixin",
-    "ContainerMixin"
+    "WorldMixin"
   ],
   "mixinextras": {
     "minVersion": "0.5.0"
