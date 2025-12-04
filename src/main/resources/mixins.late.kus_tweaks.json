@@ -8,6 +8,7 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AffixDampeningMixin",
     "BattleSignMixin",
     "BlackFlameMixin",
     "EntityBaseBulletMixin",
