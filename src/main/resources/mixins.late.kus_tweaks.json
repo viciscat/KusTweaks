@@ -31,8 +31,8 @@
     "cofh.ExtruderManagerMixin",
     "cofh.TileTapperMixin",
     "tg.GenericGunMixin",
-    "tg.GenericGunMixin\$ChargeMixin",
-    "tg.GenericGunMixin\$MeleeMixin",
+    "tg.GenericGunMixin$ChargeMixin",
+    "tg.GenericGunMixin$MeleeMixin",
     "tg.GenericProjectileAccessor",
     "tg.GenericProjectileMixin",
     "tg.TGExplosionMixin",
@@ -43,6 +43,10 @@
     "tg.particle.CommonParticleMixin",
     "tg.particle.CommonRocketParticleMixin",
     "tg.particle.TFGParticleMixin",
-    "BattleSignMixin"
-  ]
+    "BattleSignMixin",
+    "TraitEnderferenceMixin"
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
 }
