@@ -42,6 +42,7 @@
     "tg.DeatomizerProjectileMixin",
     "tg.particle.CommonParticleMixin",
     "tg.particle.CommonRocketParticleMixin",
-    "tg.particle.TFGParticleMixin"
+    "tg.particle.TFGParticleMixin",
+    "BattleSignMixin"
   ]
 }
