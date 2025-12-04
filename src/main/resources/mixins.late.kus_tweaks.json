@@ -20,6 +20,7 @@
     "ItemWandMixin",
     "ItemWormMixin",
     "LilliputianEntitySizeHandlerMixin",
+    "ModClientFMLEventHandlerMixin",
     "PotionHemorrhageEffectMixin",
     "SkeletonSummonMixin",
     "SoulboundEnchantmentMixin",
