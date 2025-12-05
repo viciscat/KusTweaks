@@ -21,6 +21,7 @@
     "ItemWormMixin",
     "LilliputianEntitySizeHandlerMixin",
     "ModClientFMLEventHandlerMixin",
+    "ModTravelPotionMixin",
     "PotionHemorrhageEffectMixin",
     "SkeletonSummonMixin",
     "SlotPotionMixin",
