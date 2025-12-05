@@ -23,6 +23,7 @@
     "ModClientFMLEventHandlerMixin",
     "PotionHemorrhageEffectMixin",
     "SkeletonSummonMixin",
+    "SlotPotionMixin",
     "SoulboundEnchantmentMixin",
     "SRPCAttributesMixin",
     "SRPEffectBaseMixin",
