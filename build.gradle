@@ -179,6 +179,7 @@ dependencies {
     implementation rfg.deobf("curse.maven:thermal_expansion-69163:2926431")
     implementation rfg.deobf("curse.maven:thermal_innovation-291737:2920441")
     implementation rfg.deobf("curse.maven:constructs_armory-287683:3174535")
+    implementation rfg.deobf("curse.maven:distinct_damage_descriptions-403617:7010189")
     implementation rfg.deobf("curse.maven:dynamic_trees-252818:3812473-deobf-3812474-sources-3812476")
 
     implementation rfg.deobf(files("libs/mcheli-1.1.4.jar"))

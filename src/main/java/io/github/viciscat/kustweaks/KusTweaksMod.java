@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import techguns.tileentities.operation.UpgradeBenchRecipes;
+import yeelp.distinctdamagedescriptions.registries.DDDRegistries;
 
 import java.io.File;
 
@@ -92,5 +93,6 @@ public class KusTweaksMod {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         KusConfig.finalizeConfig();
+		DDDRegistries.distributions.register(new WitherBeamDistribution());
     }
 }

@@ -24,7 +24,8 @@
       "champions",
       "thermalexpansion",
       "thermalinnovation",
-      "conarmor"
+      "conarmor",
+      "distinctdamagedescriptions"
     ],
     "credits": "${mod_credits}",
     "url": "${mod_url}",

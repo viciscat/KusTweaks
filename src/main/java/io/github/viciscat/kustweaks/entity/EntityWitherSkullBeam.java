@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityWitherSkullBeam extends Entity {
-
-
+	public static final String DAMAGE_TYPE = "wither_beam";
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(EntityWitherSkullBeam.class, DataSerializers.VARINT);
 
     private EntityWither shootingEntity;
@@ -183,7 +182,7 @@ public class EntityWitherSkullBeam extends Entity {
                 for (Entity target : getTargets()) {
                     if (target.getEntityBoundingBox().grow(0.15).calculateIntercept(positionVector, add) == null) continue;
 
-                    DamageSource source = new EntityDamageSourceIndirect("wither", this, shootingEntity).setMagicDamage();
+                    DamageSource source = new EntityDamageSourceIndirect(DAMAGE_TYPE, this, shootingEntity).setMagicDamage();
 
                     int i = target.hurtResistantTime;
                     target.hurtResistantTime = 0;
