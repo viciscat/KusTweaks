@@ -22,6 +22,8 @@ item.kus_tweaks.multishot_gun_upgrade.name=Gun Upgrade: Multishot
 item.kus_tweaks.pierce_gun_upgrade.name=Gun Upgrade: Pierce
 item.kus_tweaks.refund_chance_gun_upgrade.name=Gun Upgrade: Refund Chance
 item.kus_tweaks.reload_speed_gun_upgrade.name=Gun Upgrade: Reload Speed
+item.kus_tweaks.projectile_speed_gun_upgrade.name=Gun Upgrade: Projectile Speed
+item.kus_tweaks.bulwark_upgrade.name=Bulwark Upgrade
 
 # Attributes
 attribute.name.kus_tweaks.tgReloadSpeed=§eReload Speed

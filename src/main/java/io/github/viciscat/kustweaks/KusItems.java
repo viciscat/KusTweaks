@@ -1,9 +1,6 @@
 package io.github.viciscat.kustweaks;
 
-import io.github.viciscat.kustweaks.item.ItemExperienceAbsorber;
-import io.github.viciscat.kustweaks.item.ItemGunUpgrade;
-import io.github.viciscat.kustweaks.item.ItemInfiniteAntiGravPack;
-import io.github.viciscat.kustweaks.item.ItemMagnet;
+import io.github.viciscat.kustweaks.item.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -38,6 +35,8 @@ public class KusItems {
     public static ItemExperienceAbsorber itemExperienceAbsorber;
     @GameRegistry.ObjectHolder("kus_tweaks:chaotic_amethyst")
     public static Item itemChaoticAmethyst;
+	@GameRegistry.ObjectHolder("kus_tweaks:bulwark_upgrade")
+	public static ItemBulwarkUpgrade itemBulwarkUpgrade;
 
     @GameRegistry.ObjectHolder("kus_tweaks:glass_helmet")
     public static ItemArmor itemGlassHelmet;
@@ -50,13 +49,14 @@ public class KusItems {
 
 	public static ItemGunUpgrade[] gunUpgrades;
 
-    
+
     public static void registerItems(IForgeRegistry<Item> registry) {
         registry.register(new ItemMagnet());
         registry.register(new ItemExperienceAbsorber());
         registry.register(new ItemInfiniteAntiGravPack("infinite_antigravpack", 123456789));
-        registry.register(new Item().setRegistryName("evil_essence").setCreativeTab(CreativeTabs.MATERIALS).setTranslationKey(PREFIX + "evil_essence"));
-        registry.register(new Item().setRegistryName("chaotic_amethyst").setCreativeTab(CreativeTabs.MATERIALS).setTranslationKey(PREFIX + "chaotic_amethyst"));
+		registry.register(new Item().setRegistryName("evil_essence").setCreativeTab(CreativeTabs.MATERIALS).setTranslationKey(PREFIX + "evil_essence"));
+		registry.register(new Item().setRegistryName("chaotic_amethyst").setCreativeTab(CreativeTabs.MATERIALS).setTranslationKey(PREFIX + "chaotic_amethyst"));
+		registry.register(new ItemBulwarkUpgrade().setTranslationKey(PREFIX + "bulwark_upgrade"));
 
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.HEAD).setRegistryName("glass_helmet").setTranslationKey(PREFIX + "glass_helmet").setMaxDamage(38));
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.CHEST).setRegistryName("glass_chestplate").setTranslationKey(PREFIX + "glass_chestplate").setMaxDamage(56));

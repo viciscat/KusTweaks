@@ -18,7 +18,8 @@ public enum GunUpgrade {
 	MULTISHOT,
 	PIERCE,
 	REFUND_CHANCE,
-	RELOAD_SPEED;
+	RELOAD_SPEED,
+	PROJECTILE_SPEED;
 
 	private static final String[] IDS = Arrays.stream(values()).map(Enum::name).map(s -> s.toLowerCase(Locale.ENGLISH)).toArray(String[]::new);
 	private static final Map<String, GunUpgrade> FROM_ID = Arrays.stream(values()).collect(Collectors.toMap(GunUpgrade::id, Function.identity()));

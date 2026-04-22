@@ -41,6 +41,7 @@ public class ClientEvents {
         registerItemModel(KusItems.itemGlassChestplate);
         registerItemModel(KusItems.itemGlassLeggings);
         registerItemModel(KusItems.itemGlassBoots);
+        registerItemModel(KusItems.itemBulwarkUpgrade);
 		for (ItemGunUpgrade upgrade : KusItems.gunUpgrades) {
 			ModelLoader.setCustomModelResourceLocation(upgrade, 0, new ModelResourceLocation(upgrade.gunUpgrade.model(), "inventory"));
 		}

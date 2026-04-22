@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 3.11.0
+
+- Make OMT turrets use techguns bullets and be damageable
+- Add a new gun upgrade
+
 # 3.9.0
 - Gun upgrades
 - Deatomizer min damage

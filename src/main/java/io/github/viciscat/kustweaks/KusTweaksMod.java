@@ -9,14 +9,15 @@ import io.github.viciscat.kustweaks.capability.GunExperienceTrackerImpl;
 import io.github.viciscat.kustweaks.capability.UpgradableGun;
 import io.github.viciscat.kustweaks.capability.UpgradableGunImpl;
 import io.github.viciscat.kustweaks.enchants.ExperiencedEnchantment;
+import io.github.viciscat.kustweaks.entity.EntityTurretHeadHitbox;
 import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
+import io.github.viciscat.kustweaks.entity.render.RenderNothing;
 import io.github.viciscat.kustweaks.entity.render.RenderWitherSkullBeam;
 import io.github.viciscat.kustweaks.network.KusNetwork;
 import io.github.viciscat.kustweaks.potion.DrownierPotion;
 import io.github.viciscat.kustweaks.potion.KindlingPotion;
 import io.github.viciscat.kustweaks.potion.RedirectionPotion;
 import io.github.viciscat.kustweaks.potion.ResistancePenetrationPotion;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -77,16 +78,17 @@ public class KusTweaksMod {
 		UpgradeBenchRecipes.recipes.add(new GunUpgradeRecipe());
 
         // Every entity in our mod has an ID (local to this mod)
-        int id = 1;
-        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, "wither_skull_beam"), EntityWitherSkullBeam.class, "wither_skull_beam", id++, this, 64, 3, true);
+        int id = 0;
+        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, "wither_skull_beam"), EntityWitherSkullBeam.class, "wither_skull_beam", ++id, this, 64, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, "turret_head_hitbox"), EntityTurretHeadHitbox.class, "turret_head_hitbox", ++id, this, 64, 20, false);
         if (event.getSide() == Side.CLIENT) {
             RenderingRegistry.registerEntityRenderingHandler(EntityWitherSkullBeam.class, RenderWitherSkullBeam::new);
+            RenderingRegistry.registerEntityRenderingHandler(EntityTurretHeadHitbox.class, RenderNothing::new);
         }
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        System.out.println("Dirt: " + Blocks.DIRT.getTranslationKey());
         new SplashTrait().addItem(KusItems.itemChaoticAmethyst);
     }
 

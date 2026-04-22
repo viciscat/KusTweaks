@@ -25,7 +25,8 @@
       "thermalexpansion",
       "thermalinnovation",
       "conarm",
-      "distinctdamagedescriptions"
+      "distinctdamagedescriptions",
+      "openmodularturrets"
     ],
     "credits": "${mod_credits}",
     "url": "${mod_url}",
