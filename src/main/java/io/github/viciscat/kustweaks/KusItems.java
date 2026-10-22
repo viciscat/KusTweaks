@@ -63,7 +63,7 @@ public class KusItems {
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.LEGS).setRegistryName("glass_leggings").setTranslationKey(PREFIX + "glass_leggings").setMaxDamage(52));
         registry.register(new ItemArmor(GLASS_ARMOR, 0, EntityEquipmentSlot.FEET).setRegistryName("glass_boots").setTranslationKey(PREFIX + "glass_boots").setMaxDamage(45));
 
-		gunUpgrades = Arrays.stream(GunUpgrade.values()).map(ItemGunUpgrade::new).toArray(ItemGunUpgrade[]::new);
+		gunUpgrades = GunUpgrades.KUS_GUN_UPGRADES.stream().map(ItemGunUpgrade::new).toArray(ItemGunUpgrade[]::new);
 		for (ItemGunUpgrade gunUpgrade : gunUpgrades) {
 			gunUpgrade.setCreativeTab(CreativeTabs.MATERIALS);
 			registry.register(gunUpgrade.setTranslationKey(PREFIX + gunUpgrade.getRegistryName().getPath()));

@@ -8,11 +8,13 @@ import io.github.viciscat.kustweaks.capability.GunExperienceTracker;
 import io.github.viciscat.kustweaks.capability.GunExperienceTrackerImpl;
 import io.github.viciscat.kustweaks.capability.UpgradableGun;
 import io.github.viciscat.kustweaks.capability.UpgradableGunImpl;
+import io.github.viciscat.kustweaks.command.GunLevelupCommand;
 import io.github.viciscat.kustweaks.enchants.ExperiencedEnchantment;
 import io.github.viciscat.kustweaks.entity.EntityTurretHeadHitbox;
 import io.github.viciscat.kustweaks.entity.EntityWitherSkullBeam;
 import io.github.viciscat.kustweaks.entity.render.RenderNothing;
 import io.github.viciscat.kustweaks.entity.render.RenderWitherSkullBeam;
+import io.github.viciscat.kustweaks.kus_tweaks.Tags;
 import io.github.viciscat.kustweaks.network.KusNetwork;
 import io.github.viciscat.kustweaks.potion.DrownierPotion;
 import io.github.viciscat.kustweaks.potion.KindlingPotion;
@@ -27,6 +29,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -42,7 +45,7 @@ import java.io.File;
 public class KusTweaksMod {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final String MOD_ID = "kus_tweaks";
+    public static final String MOD_ID = Tags.MOD_ID;
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     @GameRegistry.ObjectHolder("kus_tweaks:hyaloclastite")
@@ -97,4 +100,9 @@ public class KusTweaksMod {
         KusConfig.finalizeConfig();
 		DDDRegistries.distributions.register(new WitherBeamDistribution());
     }
+
+	@Mod.EventHandler
+	public void serverStarting(FMLServerStartingEvent event) {
+		event.registerServerCommand(new GunLevelupCommand());
+	}
 }

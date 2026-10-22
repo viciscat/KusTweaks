@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.viciscat.kustweaks.GunUpgrade;
+import io.github.viciscat.kustweaks.GunUpgrades;
 import io.github.viciscat.kustweaks.KusAttributes;
 import io.github.viciscat.kustweaks.MixinFields;
 import io.github.viciscat.kustweaks.TGTurretSource;
@@ -122,14 +122,14 @@ public abstract class GenericProjectileMixin extends Entity implements ExtendedG
 			if (Math.random() < (attr % 1)) mult++;
 			UpgradableGun gun = UpgradableGun.get(shooter.getHeldItemMainhand());
 			if (gun == null) gun = UpgradableGun.getOrEmpty(shooter.getHeldItemOffhand());
-			kusTweaks$bouncesLeft = mult + gun.getUpgradeStack(GunUpgrade.BOUNCE);
-			float damageMult = 1 + gun.getUpgradeStack(GunUpgrade.DAMAGE) * 0.1f;
+			kusTweaks$bouncesLeft = mult + gun.getUpgradeStack(GunUpgrades.BOUNCE);
+			float damageMult = 1 + gun.getUpgradeStack(GunUpgrades.DAMAGE) * 0.1f;
 			damage *= damageMult;
 			damageMin *= damageMult;
 			kusTweaks$explosionSizeMult *= KusAttributes.getAttributeOrDefault(shooter, KusAttributes.EXPLOSION_SIZE_MULTIPLIER);
-			kusTweaks$explosionSizeMult *= (1 + gun.getUpgradeStack(GunUpgrade.EXPLOSION_SIZE) * 0.1);
+			kusTweaks$explosionSizeMult *= (1 + gun.getUpgradeStack(GunUpgrades.EXPLOSION_SIZE) * 0.1);
 
-			int projectileSpeedStacks = gun.getUpgradeStack(GunUpgrade.PROJECTILE_SPEED);
+			int projectileSpeedStacks = gun.getUpgradeStack(GunUpgrades.PROJECTILE_SPEED);
 			float projectileDistMult = 1 + projectileSpeedStacks * 0.1f;
 			float projectileSpeedMult = 1 + projectileSpeedStacks * 0.05f;
 			speed *= projectileSpeedMult;
@@ -139,7 +139,7 @@ public abstract class GenericProjectileMixin extends Entity implements ExtendedG
 			ticksToLive = (int) (ticksToLive * projectileDistMult);
 			lifetime = (int) (lifetime * projectileDistMult);
 
-			kusTweaks$pierceLeft = gun.getUpgradeStack(GunUpgrade.PIERCE);
+			kusTweaks$pierceLeft = gun.getUpgradeStack(GunUpgrades.PIERCE);
 			kusTweaks$piercedObjects = new ObjectOpenHashSet<>(kusTweaks$pierceLeft);
 		}
 	}

@@ -1,11 +1,15 @@
 package io.github.viciscat.kustweaks.capability;
 
 import io.github.viciscat.kustweaks.GunUpgrade;
+import io.github.viciscat.kustweaks.GunUpgrades;
+import io.github.viciscat.kustweaks.KusTweaksMod;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
@@ -21,7 +25,7 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 	private static final int FIRST_LEVEL_REQUIREMENT = 500;
 	private @Nonnull UUID uuid = MathHelper.getRandomUUID(RANDOM);
 	private long xp;
-	private final Reference2IntMap<GunUpgrade> upgrades = new Reference2IntOpenHashMap<>(GunUpgrade.values().length, 0.99f);
+	private final Reference2IntMap<GunUpgrade> upgrades = new Reference2IntOpenHashMap<>();
 
 	@Override
 	public NBTTagCompound serializeNBT() {
@@ -29,7 +33,7 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 		compound.setUniqueId("uuid", uuid);
 		NBTTagCompound upgradesTag = compound.getCompoundTag("upgrades");
 		for (Reference2IntMap.Entry<GunUpgrade> entry : upgrades.reference2IntEntrySet()) {
-			upgradesTag.setInteger(entry.getKey().id(), entry.getIntValue());
+			upgradesTag.setInteger(entry.getKey().id().toString(), entry.getIntValue());
 		}
 		compound.setTag("upgrades", upgradesTag);
 		compound.setLong("xp", xp);
@@ -43,7 +47,13 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 		upgrades.clear();
 		NBTTagCompound upgradesTag = nbt.getCompoundTag("upgrades");
 		for (String key : upgradesTag.getKeySet()) {
-			GunUpgrade fromId = GunUpgrade.fromId(key);
+			ResourceLocation id;
+			if (key.indexOf(':') >= 0) {
+				id = new ResourceLocation(key);
+			} else {
+				id = new ResourceLocation(KusTweaksMod.MOD_ID, key);
+			}
+			GunUpgrade fromId = GunUpgrades.get(id);
 			if (fromId == null) continue;
 			upgrades.put(fromId, upgradesTag.getInteger(key));
 		}
@@ -104,7 +114,7 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 		if (showUpgradesList) {
 			for (Reference2IntMap.Entry<GunUpgrade> entry : upgrades.reference2IntEntrySet()) {
 				if (entry.getIntValue() <= 0) continue;
-				list.add(entry.getKey() + " x" + entry.getIntValue());
+				list.add(entry.getKey() + TextFormatting.GRAY.toString() + " x" + entry.getIntValue());
 			}
 		}
 		return list;
@@ -118,7 +128,8 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 		return slots;
 	}
 
-	private long getXpUntilNextLevel() {
+	@Override
+	public long getXpUntilNextLevel() {
 		long xp = this.xp;
 		long requirement = FIRST_LEVEL_REQUIREMENT;
 		xp -= requirement;

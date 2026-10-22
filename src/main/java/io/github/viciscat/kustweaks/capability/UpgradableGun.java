@@ -69,6 +69,11 @@ public interface UpgradableGun extends INBTSerializable<NBTTagCompound> {
 		}
 
 		@Override
+		public long getXpUntilNextLevel() {
+			return 0;
+		}
+
+		@Override
 		public NBTTagCompound serializeNBT() {
 			return null;
 		}
@@ -106,6 +111,8 @@ public interface UpgradableGun extends INBTSerializable<NBTTagCompound> {
 	void addXp(int xp);
 
 	List<String> getTooltip(boolean showUpgradesList);
+
+	long getXpUntilNextLevel();
 
 	class Storage implements Capability.IStorage<UpgradableGun> {
 

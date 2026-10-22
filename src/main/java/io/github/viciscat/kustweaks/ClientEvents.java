@@ -43,7 +43,8 @@ public class ClientEvents {
         registerItemModel(KusItems.itemGlassBoots);
         registerItemModel(KusItems.itemBulwarkUpgrade);
 		for (ItemGunUpgrade upgrade : KusItems.gunUpgrades) {
-			ModelLoader.setCustomModelResourceLocation(upgrade, 0, new ModelResourceLocation(upgrade.gunUpgrade.model(), "inventory"));
+			ResourceLocation location = new ResourceLocation(upgrade.gunUpgrade.id().getNamespace(), "gun_upgrade/" + upgrade.gunUpgrade.id().getPath());
+			ModelLoader.setCustomModelResourceLocation(upgrade, 0, new ModelResourceLocation(location, "inventory"));
 		}
         AdditionalSlotRenderRegistry.register(KusItems.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));
     }

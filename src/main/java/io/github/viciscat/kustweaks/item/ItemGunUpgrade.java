@@ -2,6 +2,7 @@ package io.github.viciscat.kustweaks.item;
 
 import io.github.viciscat.kustweaks.GunUpgrade;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemGunUpgrade extends Item {
 
@@ -9,7 +10,7 @@ public class ItemGunUpgrade extends Item {
 
 	public ItemGunUpgrade(GunUpgrade gunUpgrade) {
 		this.gunUpgrade = gunUpgrade;
-		setRegistryName(gunUpgrade.id() + "_gun_upgrade");
+		setRegistryName(new ResourceLocation(gunUpgrade.id().getNamespace(), gunUpgrade.id().getPath() + "_gun_upgrade"));
 	}
 
 }
