@@ -25,6 +25,7 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 	private static final int FIRST_LEVEL_REQUIREMENT = 500;
 	private @Nonnull UUID uuid = MathHelper.getRandomUUID(RANDOM);
 	private long xp;
+	private int bonusLevels;
 	private final Reference2IntMap<GunUpgrade> upgrades = new Reference2IntOpenHashMap<>();
 
 	@Override
@@ -37,13 +38,15 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 		}
 		compound.setTag("upgrades", upgradesTag);
 		compound.setLong("xp", xp);
+		compound.setInteger("bonusLevels", bonusLevels);
 		return compound;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
 		if (nbt.hasUniqueId("uuid")) uuid = Objects.requireNonNull(nbt.getUniqueId("uuid"));
-		if (nbt.hasKey("xp")) xp = nbt.getLong("xp");
+		xp = nbt.getLong("xp");
+		bonusLevels = nbt.getInteger("bonusLevels");
 		upgrades.clear();
 		NBTTagCompound upgradesTag = nbt.getCompoundTag("upgrades");
 		for (String key : upgradesTag.getKeySet()) {
@@ -82,6 +85,11 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 		if (stacks >= upgrade.maxStacks()) return false;
 		upgrades.put(upgrade, stacks + 1);
 		return true;
+	}
+
+	@Override
+	public void addBonusLevel() {
+		bonusLevels++;
 	}
 
 	@Override
@@ -141,7 +149,7 @@ public class UpgradableGunImpl implements UpgradableGun, ICapabilitySerializable
 	}
 
 	private int getAvailableUpgradeSlots() {
-		int slots = 1;
+		int slots = 1 + bonusLevels;
 		long xp = this.xp;
 		long requirement = FIRST_LEVEL_REQUIREMENT;
 		xp -= requirement;

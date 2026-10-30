@@ -7,12 +7,14 @@ import io.github.viciscat.kustweaks.KusTweaksMod;
 import io.github.viciscat.kustweaks.capability.UpgradableGun;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import slimeknights.tconstruct.shared.TinkerCommons;
 import techguns.gui.containers.UpgradeBenchContainer;
 import techguns.tileentities.operation.UpgradeBenchRecipes;
 
@@ -38,12 +40,22 @@ public class UpgradeBenchContainerMixin {
 		if (recipe instanceof GunUpgradeRecipe upgradeRecipe) ci.cancel(); else return;
 		GunUpgrade upgrade = upgradeRecipe.getUpgrade(inputSlots.getStackInSlot(1));
 		UpgradableGun gun = UpgradableGun.get(output);
-		if (gun == null || upgrade == null) {
+		if (gun == null) {
 			KusTweaksMod.LOGGER.warn("Item changed?");
 			outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
 			return;
 		}
-		if (gun.addUpgrade(upgrade)) outputSlot.setInventorySlotContents(0, output);
-		else outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+		if (upgrade == null) {
+			if (OreDictionary.itemMatches(TinkerCommons.matCreativeModifier, inputSlots.getStackInSlot(1), false)) {
+				gun.addBonusLevel();
+				outputSlot.setInventorySlotContents(0, output);
+			} else {
+				KusTweaksMod.LOGGER.warn("Item changed?");
+				outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+			}
+		} else {
+			if (gun.addUpgrade(upgrade)) outputSlot.setInventorySlotContents(0, output);
+			else outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+		}
 	}
 }

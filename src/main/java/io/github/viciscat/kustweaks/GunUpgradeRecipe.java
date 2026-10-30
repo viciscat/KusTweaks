@@ -4,6 +4,8 @@ import io.github.viciscat.kustweaks.capability.UpgradableGun;
 import io.github.viciscat.kustweaks.item.ItemGunUpgrade;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+import slimeknights.tconstruct.shared.TinkerCommons;
 import techguns.tileentities.operation.UpgradeBenchRecipes;
 
 public class GunUpgradeRecipe extends UpgradeBenchRecipes.UpgradeBenchRecipe {
@@ -14,7 +16,7 @@ public class GunUpgradeRecipe extends UpgradeBenchRecipes.UpgradeBenchRecipe {
 	@Override
 	public boolean matches(ItemStack input, ItemStack upgrade) {
 		UpgradableGun gun = UpgradableGun.get(input);
-		return gun != null && upgrade.getItem() instanceof ItemGunUpgrade;
+		return gun != null && (upgrade.getItem() instanceof ItemGunUpgrade || OreDictionary.itemMatches(TinkerCommons.matCreativeModifier, upgrade, false));
 	}
 
 	public GunUpgrade getUpgrade(ItemStack upgradeItem) {

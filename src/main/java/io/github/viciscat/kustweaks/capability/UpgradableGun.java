@@ -64,6 +64,11 @@ public interface UpgradableGun extends INBTSerializable<NBTTagCompound> {
 		}
 
 		@Override
+		public void addBonusLevel() {
+
+		}
+
+		@Override
 		public List<String> getTooltip(boolean showUpgradesList) {
 			return List.of();
 		}
@@ -101,6 +106,8 @@ public interface UpgradableGun extends INBTSerializable<NBTTagCompound> {
 	 * @return true if the upgrade was added.
 	 */
 	boolean addUpgrade(GunUpgrade upgrade);
+
+	void addBonusLevel();
 
 	void removeOneUpgradeStack(GunUpgrade upgrade);
 
