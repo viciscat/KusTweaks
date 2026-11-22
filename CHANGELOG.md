@@ -1,5 +1,16 @@
 # CHANGELOG
 
+# 3.12.0
+- Creepers go big boom if they are big
+- Wava (lava you can drown in)
+- Switch from Lilliputian to Laputan
+- Fix some weird compat issues between some mods
+
+# 3.11.2
+- Un-enum GunUpgrade so other mods can add some
+- Admin command to add levels to a gun easily
+- Ability to use creative modifiers to add levels to a gun
+
 # 3.11.0
 
 - Make OMT turrets use techguns bullets and be damageable
