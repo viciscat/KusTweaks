@@ -20,10 +20,18 @@ import io.github.viciscat.kustweaks.potion.DrownierPotion;
 import io.github.viciscat.kustweaks.potion.KindlingPotion;
 import io.github.viciscat.kustweaks.potion.RedirectionPotion;
 import io.github.viciscat.kustweaks.potion.ResistancePenetrationPotion;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -54,8 +62,17 @@ public class KusTweaksMod {
     @GameRegistry.ObjectHolder("kus_tweaks:respawn_anchor")
     public static RespawnAnchorBlock respawnAnchorBlock;
 
+	@GameRegistry.ObjectHolder("kus_tweaks:wava")
+	public static BlockFluidClassic wavaBlock;
+
+	public static WavaFluid wava = new WavaFluid("wava", new ResourceLocation(MOD_ID,"blocks/wava"), new ResourceLocation(MOD_ID, "blocks/flowing_wava"));
+
     public static final DamageSource POISON = new DamageSource("kus_poison").setMagicDamage().setDamageBypassesArmor();
     public static final DamageSource PARASITE_BLEED = new DamageSource("kus_parableed").setDamageBypassesArmor();
+
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
 
 
     @Mod.EventHandler

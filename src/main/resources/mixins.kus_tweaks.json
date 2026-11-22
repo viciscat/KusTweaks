@@ -10,6 +10,7 @@
   "mixins": [
     "ContainerMixin",
     "DamageSourceMixin",
+    "EntityCreeperMixin",
     "EntityGuardianMixin",
     "EntityGuardianMixin$AttackAIMixin",
     "EntityLivingBaseMixin",

@@ -4,8 +4,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.viciscat.kustweaks.KusConfig;
-import lilliputian.capabilities.ISizeCapability;
-import lilliputian.handlers.EntitySizeHandler;
+import laputan.capabilities.ISizeCapability;
+import laputan.handlers.EntitySizeHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -23,15 +23,10 @@ import java.util.UUID;
 
 @Pseudo
 @Mixin(value = EntitySizeHandler.class, remap = false)
-public class LilliputianEntitySizeHandlerMixin {
+public class LaputanEntitySizeHandlerMixin {
 
 	@Unique
 	private static final AttributeModifier HEALTH_MODIFIER = new AttributeModifier(UUID.randomUUID(), "size_health_mod", 0.0, 1);
-
-	@WrapOperation(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"), remap = false)
-	private static double modifyScaling(double a, double b, Operation<Double> original) {
-		return a;
-	}
 
 	@Inject(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLiving;getEntityAttribute(Lnet/minecraft/entity/ai/attributes/IAttribute;)Lnet/minecraft/entity/ai/attributes/IAttributeInstance;", ordinal = 2, remap = true), remap = false)
 	private static void healthAttribute(LivingEvent.LivingUpdateEvent event, CallbackInfo ci, @Local() EntityLiving entity, @Local()ISizeCapability capability) {
@@ -44,12 +39,12 @@ public class LilliputianEntitySizeHandlerMixin {
 		}
 	}
 
-	@ModifyArg(method = "onAddCapabilites", at = @At(value = "INVOKE", target = "Llilliputian/capabilities/DefaultSizeCapability;<init>(F)V"), remap = false, index = 0)
+	@ModifyArg(method = {"onLivingUpdate", "entityJoinWorld"}, at = @At(value = "INVOKE", target = "Llaputan/capabilities/ISizeCapability;setScale(F)V"), remap = false, index = 0)
 	private static float randomScale(float original) {
 		if (original == 1.f) {
-			return Math.random() < KusConfig.veryLargeChance ? 4.f : Math.random() < KusConfig.verySmallChance ? 0.4f : original;
+			return Math.random() < KusConfig.veryLargeChance ? original + 5.f : Math.random() < KusConfig.verySmallChance ? 0.4f : original;
 		} else {
-			return Math.random() < KusConfig.veryLargeChanceOther ? 4.f : Math.random() < KusConfig.verySmallChanceOther ? 0.4f : original;
+			return Math.random() < KusConfig.veryLargeChanceOther ? original + 5.f : Math.random() < KusConfig.verySmallChanceOther ? 0.4f : original;
 		}
 	}
 }

@@ -56,4 +56,9 @@ public abstract class SRPCAttributesMixin {
 
         return original.call(object) || (object instanceof GenericProjectile && !source.getDamageType().equals("tg_knockback"));
     }
+
+	@Inject(method = "trueDamage", at = @At("HEAD"), cancellable = true, remap = false)
+	private static void dontDamageIfDead(Entity attacker, EntityLivingBase victim, DamageSource source, float minDamage, CallbackInfo ci) {
+		if (victim.getHealth() <= 0) ci.cancel();
+	}
 }

@@ -16,13 +16,19 @@ import io.github.viciscat.kustweaks.block.RespawnAnchorBlock;
 import io.github.viciscat.kustweaks.potion.DrownierPotion;
 import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import laputan.capabilities.ISizeCapability;
+import laputan.capabilities.SizeProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -36,7 +42,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.RegistryEvent;
@@ -45,6 +56,8 @@ import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -54,6 +67,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,6 +92,12 @@ public class CommonEvents {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(new HyaloclastiteBlock());
         event.getRegistry().register(new RespawnAnchorBlock());
+		FluidRegistry.registerFluid(KusTweaksMod.wava);
+		FluidRegistry.addBucketForFluid(KusTweaksMod.wava);
+		BlockFluidClassic wavaBlock = new BlockWava();
+		wavaBlock.setRegistryName("wava");
+		wavaBlock.setTranslationKey(KusTweaksMod.MOD_ID + ".wava");
+		event.getRegistry().register(wavaBlock);
     }
 
     @SubscribeEvent
@@ -84,6 +105,7 @@ public class CommonEvents {
         event.getRegistry().register(new HyaloclastiteBlock.Item(KusTweaksMod.hyaloclastiteBlock));
         //noinspection DataFlowIssue
         event.getRegistry().register(new ItemBlock(KusTweaksMod.respawnAnchorBlock).setRegistryName(KusTweaksMod.respawnAnchorBlock.getRegistryName()));
+		event.getRegistry().register(new ItemBlock(KusTweaksMod.wavaBlock).setRegistryName(KusTweaksMod.wavaBlock.getRegistryName()));
 
         KusItems.registerItems(event.getRegistry());
     }
@@ -366,4 +388,46 @@ public class CommonEvents {
         }
         removeSoulboundModifiers(event.getEntityPlayer());
     }
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onLivingDrops(LivingDropsEvent event) {
+		ISizeCapability capability = event.getEntityLiving().getCapability(SizeProvider.sizeCapability, null);
+		if (capability != null && capability.getScale() > 1f) {
+			float scale = capability.getScale();
+			List<EntityItem> extraStacks = new ArrayList<>();
+			for (EntityItem drop : event.getDrops()) {
+				int count = (int) (drop.getItem().getCount() * scale);
+				drop.getItem().setCount(Math.min(drop.getItem().getMaxStackSize(), count));
+				count -= drop.getItem().getCount();
+				while (count > 0) {
+					ItemStack copy = drop.getItem().copy();
+					copy.setCount(Math.min(copy.getMaxStackSize(), count));
+					count -= copy.getCount();
+					EntityItem entityItem = new EntityItem(drop.getEntityWorld(), drop.posX, drop.posY, drop.posZ);
+					entityItem.setItem(copy);
+					extraStacks.add(entityItem);
+				}
+			}
+			extraStacks.forEach(event.getDrops()::add);
+		}
+	}
+
+	private static class BlockWava extends BlockFluidClassic {
+		public BlockWava() {
+			super(KusTweaksMod.wava, Material.LAVA);
+			this.setLightLevel(1.0F);
+		}
+
+		@Nullable
+		@Override
+		public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState iblockstate, Entity entity, double yToTest, Material materialIn, boolean testingHead) {
+			return materialIn == Material.WATER && testingHead ? true : null;
+		}
+
+		@Nullable
+		@Override
+		public Boolean isAABBInsideMaterial(World world, BlockPos pos, AxisAlignedBB boundingBox, Material materialIn) {
+			return materialIn == Material.WATER ? true : null;
+		}
+	}
 }

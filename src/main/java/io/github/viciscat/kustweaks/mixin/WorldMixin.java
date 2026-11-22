@@ -10,6 +10,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,5 +51,12 @@ public class WorldMixin implements ExtendedWorld {
 	@Inject(method = "rayTraceBlocks(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;ZZZ)Lnet/minecraft/util/math/RayTraceResult;", at = @At("RETURN"))
 	private void resetThreadLocal(CallbackInfoReturnable<RayTraceResult> cir) {
 		kusTweaks$ignoredBlocks.remove();
+	}
+
+	@WrapOperation(method = "spawnEntity", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/eventhandler/EventBus;post(Lnet/minecraftforge/fml/common/eventhandler/Event;)Z", remap = false))
+	private boolean doNotModifyOnClient(EventBus instance, Event event, Operation<Boolean> original) {
+		World thiz = (World) (Object) this;
+		if (thiz.isRemote) return false;
+		return original.call(instance, event);
 	}
 }

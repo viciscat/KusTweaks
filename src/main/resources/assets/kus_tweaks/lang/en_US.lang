@@ -53,3 +53,6 @@ enchantment.experienced=Experienced
 
 # Tinkers Modifiers
 modifier.kus_splash.name=Splash
+
+# Fluids
+fluid.kus_tweaks.wava=Wava

@@ -2,8 +2,14 @@ package io.github.viciscat.kustweaks;
 
 import c4.champions.common.capability.CapabilityChampionship;
 import c4.champions.common.capability.IChampionship;
+import c4.champions.common.config.ConfigHandler;
+import c4.champions.common.util.ChampionHelper;
 import com.dhanantry.scapeandrunparasites.entity.monster.hijacked.EntityHiGolem;
 import com.dhanantry.scapeandrunparasites.init.SRPPotions;
+import com.hbm.config.BombConfig;
+import com.hbm.entity.effect.EntityNukeTorex;
+import com.hbm.entity.logic.EntityNukeExplosionMK5;
+import com.rejahtavi.rfp2.RFP2;
 import com.srpcotesia.capability.CapabilityEnhancedMob;
 import com.srpcotesia.capability.CapabilityParasitePlayer;
 import com.srpcotesia.capability.EnhancedMob;
@@ -12,15 +18,25 @@ import com.tmtravlr.potioncore.potion.PotionMagicShield;
 import com.tmtravlr.potioncore.potion.PotionRecoil;
 import com.tmtravlr.potioncore.potion.PotionRevival;
 import electroblob.wizardry.registry.WizardryItems;
+import funwayguy.epicsiegemod.config.props.CfgProps;
 import io.github.viciscat.wither.DecayPotion;
+import laputan.capabilities.ISizeCapability;
+import laputan.capabilities.SizeProvider;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.World;
 
 /**
  * Methods used in vanilla mixin that use mod methods, which causes a crash if in the mixin itself
@@ -74,4 +90,33 @@ public class MixinMethods {
             return -1;
         }
     }
+
+	public static boolean shouldHideHead() {
+		return RFP2.api.rfp2IsHeadHidden();
+	}
+
+	public static float getExplosionMultiplier(Entity entity) {
+		ISizeCapability capability = entity.getCapability(SizeProvider.sizeCapability, null);
+		return capability != null ? capability.getScale() : 1;
+	}
+
+	public static void bigBoomAt(EntityCreeper entity, float r) {
+		if (CfgProps.CR_CENA.get(entity).doubleValue() > (double)0.0F && entity.getCustomNameTag().equalsIgnoreCase("John Cena")) {
+			r *= 3;
+		}
+		IChampionship chp = CapabilityChampionship.getChampionship(entity);
+		if (chp != null && ChampionHelper.isElite(chp.getRank())) {
+			r *= 1 + 0.3f * chp.getRank().getTier();
+		}
+		double x = entity.posX + 0.5;
+		double y = entity.posY + 0.5;
+		double z = entity.posZ + 0.5;
+		World world = entity.getEntityWorld();
+		world.playSound(null, x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+		EntityNukeExplosionMK5 mk5 = EntityNukeExplosionMK5.statFacNoRad(world, (int) r, x, y, z);
+		world.spawnEntity(mk5);
+		if (BombConfig.enableNukeClouds) {
+			EntityNukeTorex.statFac(world, x, y, z, r);
+		}
+	}
 }

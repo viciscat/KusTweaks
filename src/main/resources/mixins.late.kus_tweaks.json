@@ -12,16 +12,19 @@
     "BattleSignMixin",
     "BlackFlameMixin",
     "EntityBaseBulletMixin",
+    "EntityCreeperNuclearMixin",
     "EntityFinalFlashMixin",
+    "EntityNetheruMixin",
     "EntityParasiteBaseMixin",
     "EntityPMalleableMixin",
     "ExplosionTinkersBaseMixin",
     "FoodEnergyRecipeMixin",
     "ItemWandMixin",
     "ItemWormMixin",
-    "LilliputianEntitySizeHandlerMixin",
+    "LaputanEntitySizeHandlerMixin",
     "ModClientFMLEventHandlerMixin",
     "ModTravelPotionMixin",
+    "NTMEntityDamageUtilMixin",
     "PotionHemorrhageEffectMixin",
     "SkeletonSummonMixin",
     "SlotPotionMixin",
@@ -68,5 +71,9 @@
   ],
   "mixinextras": {
     "minVersion": "0.5.0"
-  }
+  },
+  "client": [
+    "BetterCombatEventHandlersClientMixin",
+    "SkinLayerRendererPlayerMixin"
+  ]
 }

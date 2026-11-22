@@ -4,12 +4,15 @@ import io.github.viciscat.kustweaks.item.ItemGunUpgrade;
 import io.github.viciscat.kustweaks.network.KusNetwork;
 import io.github.viciscat.kustweaks.network.RandomRespawnPacket;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +50,16 @@ public class ClientEvents {
 			ModelLoader.setCustomModelResourceLocation(upgrade, 0, new ModelResourceLocation(location, "inventory"));
 		}
         AdditionalSlotRenderRegistry.register(KusItems.itemInfiniteAntiGravPack, new RenderAdditionalSlotItem(new ModelAntiGravPack(), new ResourceLocation(KusTweaksMod.MOD_ID, "textures/armors/infinite_antigravpack.png")));
+
+		ModelBakery.registerItemVariants(Item.getItemFromBlock(KusTweaksMod.wavaBlock));
+		ModelResourceLocation fluid = new ModelResourceLocation(new ResourceLocation(KusTweaksMod.MOD_ID, "wava_fluid"), "wava");
+		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(KusTweaksMod.wavaBlock), stack -> fluid);
+		ModelLoader.setCustomStateMapper(KusTweaksMod.wavaBlock, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return fluid;
+			}
+		});
     }
     
     private static void registerItemModel(Item item) {
